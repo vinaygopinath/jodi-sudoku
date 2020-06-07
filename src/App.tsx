@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grommet, Box } from 'grommet';
 import { Route } from 'react-router-dom';
-import { Landing } from './pages/landing/landing';
+import Landing from './pages/landing/landing';
 
 const theme = {
   global: {

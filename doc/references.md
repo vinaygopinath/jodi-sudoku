@@ -9,3 +9,11 @@
 ## React Typescript
 * Initial setup: https://create-react-app.dev/docs/adding-typescript/
 * Components: https://github.com/typescript-cheatsheets/react-typescript-cheatsheet#class-components
+
+## Redux with Typecript
+* React-redux: https://react-redux.js.org/introduction/basic-tutorial
+* Initial setup: https://redux.js.org/recipes/usage-with-typescript + https://react-redux.js.org/using-react-redux/static-typing
+
+## Redux-observable
+* Overview: https://redux-observable.js.org/docs/basics/Epics.html
+* Initial setup: https://redux-observable.js.org/docs/basics/SettingUpTheMiddleware.html
