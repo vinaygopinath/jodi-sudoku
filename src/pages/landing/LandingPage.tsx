@@ -1,15 +1,13 @@
 import React from 'react';
-import { Main, Heading, Box, Button, Text, Grommet, ResponsiveContext, Grid } from "grommet"
-import { Notification } from 'grommet-icons'
-import { DifficultyLevel } from '../../models/player/DifficultyLevel';
+import { Heading, Box, Button, Text, ResponsiveContext, Grid } from "grommet"
 import { RootState } from '../../store/rootReducer';
-import { PlayerState } from '../../store/player/types';
 import { PlayerType } from '../../models/player/PlayerType';
 import { PlayerActions } from '../../store/player/actions';
 import { connect, ConnectedProps } from 'react-redux';
 
 const mapState = (state: RootState) => ({
-  difficultyLevel: state.player.difficultyLevel
+  difficultyLevel: state.player.difficultyLevel,
+  playerType: state.player.playerType
 })
 
 const mapDispatch = {
@@ -40,8 +38,9 @@ class AppBar extends React.Component {
   }
 }
 
-class Landing extends React.Component<LandingProps, {}> {
+class LandingPage extends React.Component<LandingProps, {}> {
   showDifficultyLevelSubMenu(playerType: PlayerType) {
+    this.props.selectPlayerType(playerType)
     console.log(`showDifficultyLevelSubMenu called with playerType ${playerType}`)
     this.setState(
       {
@@ -80,6 +79,14 @@ class Landing extends React.Component<LandingProps, {}> {
     )
   }
 
+  getMenu() {
+    if (this.props.playerType != null) {
+      return this.getDifficultyLevelSubMenu()
+    } else {
+      return this.getMainMenu()
+    }
+  }
+
   render() {
     return (
       <Box fill background="react">
@@ -87,11 +94,11 @@ class Landing extends React.Component<LandingProps, {}> {
           <Heading margin="small">Jodi Sudoku</Heading>
           <Text>Play Sudoku with others</Text>
           <Text margin="small"></Text>
-          {this.getMainMenu()}
+          {this.getMenu()}
         </Box>
       </Box>
     )
   }
 }
 
-export default connector(Landing)
+export default connector(LandingPage)

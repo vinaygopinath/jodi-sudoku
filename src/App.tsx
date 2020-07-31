@@ -1,7 +1,7 @@
 import React from 'react';
-import { Grommet, Box } from 'grommet';
+import { Grommet } from 'grommet';
 import { Route } from 'react-router-dom';
-import Landing from './pages/landing/landing';
+import LandingPage from './pages/landing/LandingPage'
 
 const theme = {
   global: {
@@ -19,7 +19,7 @@ const theme = {
 const App: React.FC = () => {
   return (
     <Grommet theme={theme} full>
-      <Route path="/" component={Landing}></Route>
+      <Route path="/" component={LandingPage}></Route>
     </Grommet>
   );
 }
