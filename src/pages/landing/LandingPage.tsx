@@ -4,6 +4,7 @@ import { RootState } from '../../store/rootReducer';
 import { PlayerType } from '../../models/player/PlayerType';
 import { PlayerActions } from '../../store/player/actions';
 import { connect, ConnectedProps } from 'react-redux';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 const mapState = (state: RootState) => ({
   difficultyLevel: state.player.difficultyLevel,
@@ -16,8 +17,7 @@ const mapDispatch = {
 
 const connector = connect(mapState, mapDispatch)
 
-type LandingProps = ConnectedProps<typeof connector> & {
-
+type LandingProps = ConnectedProps<typeof connector> & WithTranslation & {
 }
 
 class AppBar extends React.Component {
@@ -56,10 +56,10 @@ class LandingPage extends React.Component<LandingProps, {}> {
       <ResponsiveContext.Consumer >
         {size => (
           <Grid columns={size === 'small' ? ["full"] : ["1/4", "1/4", "1/4", "1/4"]}>
-            <Button margin="small" size="large" color="neutral-1" label="Easy" primary/>
-            <Button margin="small" size="large" color="neutral-2" label="Medium" primary/>
-            <Button margin="small" size="large" color="neutral-3" label="Hard" primary/>
-            <Button margin="small" size="large" color="neutral-4" label="Extreme" primary/>
+            <Button margin="small" size="large" color="neutral-1" label={this.getLocaleString('landing_difficulty_level_easy')} primary />
+            <Button margin="small" size="large" color="neutral-2" label={this.getLocaleString('landing_difficulty_level_medium')} primary />
+            <Button margin="small" size="large" color="neutral-3" label={this.getLocaleString('landing_difficulty_level_hard')} primary />
+            <Button margin="small" size="large" color="neutral-4" label={this.getLocaleString('landing_difficulty_level_extreme')} primary />
           </Grid>
         )}
       </ResponsiveContext.Consumer>
@@ -71,8 +71,8 @@ class LandingPage extends React.Component<LandingProps, {}> {
       <ResponsiveContext.Consumer >
         {size => (
           <Grid columns={size === 'small' ? ["full"] : ["1/2", "1/2"]}>
-            <Button margin="small" size="large" color="neutral-3" label="Single Player" primary onClick={() => this.showDifficultyLevelSubMenu(PlayerType.SINGLE_PLAYER)} />
-            <Button margin="small" size="large" color="neutral-4" label="Two Player" primary onClick={() => this.showDifficultyLevelSubMenu(PlayerType.TWO_PLAYER)} />
+            <Button margin="small" size="large" color="neutral-3" label={this.getLocaleString('landing_player_type_single')} primary onClick={() => this.showDifficultyLevelSubMenu(PlayerType.SINGLE_PLAYER)} />
+            <Button margin="small" size="large" color="neutral-4" label={this.getLocaleString('landing_player_type_two')} primary onClick={() => this.showDifficultyLevelSubMenu(PlayerType.TWO_PLAYER)} />
           </Grid>
         )}
       </ResponsiveContext.Consumer>
@@ -87,12 +87,16 @@ class LandingPage extends React.Component<LandingProps, {}> {
     }
   }
 
+  getLocaleString(translationKey: string): String {
+    return this.props.t(translationKey)
+  }
+
   render() {
     return (
       <Box fill background="react">
         <Box flex align='center' justify='center'>
-          <Heading margin="small">Jodi Sudoku</Heading>
-          <Text>Play Sudoku with others</Text>
+          <Heading margin="small">{this.getLocaleString('landing_app_title')}</Heading>
+          <Text>{this.getLocaleString('landing_app_description')}</Text>
           <Text margin="small"></Text>
           {this.getMenu()}
         </Box>
@@ -101,4 +105,4 @@ class LandingPage extends React.Component<LandingProps, {}> {
   }
 }
 
-export default connector(LandingPage)
+export default connector(withTranslation('landing')(LandingPage))

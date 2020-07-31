@@ -1,0 +1,10 @@
+{
+  "landing_app_title": "Jodi Sudoku",
+  "landing_app_description": "Play Sudoku with others",
+  "landing_player_type_single": "Single Player",
+  "landing_player_type_two": "Two Player",
+  "landing_difficulty_level_easy": "Easy",
+  "landing_difficulty_level_medium": "Medium",
+  "landing_difficulty_level_hard": "Hard",
+  "landing_difficulty_level_extreme": "Extreme"
+}

@@ -18,9 +18,11 @@ const theme = {
 
 const App: React.FC = () => {
   return (
-    <Grommet theme={theme} full>
-      <Route path="/" component={LandingPage}></Route>
-    </Grommet>
+    <React.Suspense fallback="Loading..">
+      <Grommet theme={theme} full>
+        <Route path="/" component={LandingPage}></Route>
+      </Grommet>
+    </React.Suspense>
   );
 }
 

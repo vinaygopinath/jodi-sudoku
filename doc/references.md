@@ -17,3 +17,7 @@
 ## Redux-observable
 * Overview: https://redux-observable.js.org/docs/basics/Epics.html
 * Initial setup: https://redux-observable.js.org/docs/basics/SettingUpTheMiddleware.html
+
+## React i18n
+* i18n-next setup: https://react.i18next.com/latest/using-with-hooks
+* Use in HOC (wrapper for Class components): https://react.i18next.com/latest/withtranslation-hoc
