@@ -2,6 +2,7 @@ import React from 'react';
 import { Grommet } from 'grommet';
 import { Route } from 'react-router-dom';
 import LandingPage from './pages/landing/LandingPage'
+import GamePage from './pages/game/GamePage';
 
 const theme = {
   global: {
@@ -20,7 +21,8 @@ const App: React.FC = () => {
   return (
     <React.Suspense fallback="Loading..">
       <Grommet theme={theme} full>
-        <Route path="/" component={LandingPage}></Route>
+        <Route path="/" component={LandingPage} />
+        <Route path="/game" component={GamePage} />
       </Grommet>
     </React.Suspense>
   );

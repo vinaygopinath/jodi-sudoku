@@ -21,3 +21,6 @@
 ## React i18n
 * i18n-next setup: https://react.i18next.com/latest/using-with-hooks
 * Use in HOC (wrapper for Class components): https://react.i18next.com/latest/withtranslation-hoc
+
+## React-router
+* Programmatic redirection: https://dev.to/projectescape/programmatic-navigation-in-react-3p1l
