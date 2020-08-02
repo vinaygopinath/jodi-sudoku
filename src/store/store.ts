@@ -1,7 +1,9 @@
 import { RootState, rootReducer } from "./rootReducer";
-import { createStore, compose, applyMiddleware } from 'redux'
+import { createStore, compose, applyMiddleware, Action } from 'redux'
 import { PersistenceHelper } from "./PersistenceHelper";
 import { PLAYER_INITIAL_STATE } from "./player/reducers";
+import { createEpicMiddleware, Epic, combineEpics } from 'redux-observable';
+import { rootEpic } from './rootEpic';
 
 const DEFAULT_STATE: RootState = {
   player: PLAYER_INITIAL_STATE
@@ -10,9 +12,11 @@ const DEFAULT_STATE: RootState = {
 function configureAppStore(preloadedState: RootState) {
   const middlewares = []
 
-  // TODO Set up middleware for epics
-  // const epicMiddleware = createEpicMiddleware();
-  // middlewares.push(epicMiddleware)
+  const epicMiddleware = createEpicMiddleware();
+  const epics = combineEpics(
+    rootEpic as unknown as Epic<Action<any>, Action<any>, void, any>
+  )
+  middlewares.push(epicMiddleware)
 
   if (process.env.NODE_ENV === 'development') {
     const { createLogger } = require('redux-logger');
@@ -21,14 +25,18 @@ function configureAppStore(preloadedState: RootState) {
   }
   const enhancers = compose(applyMiddleware(...middlewares))
 
-  // epicMiddleware.run(rootEpic)
+  const store = createStore(rootReducer, preloadedState, enhancers)
 
-  return createStore(rootReducer, preloadedState, enhancers)
+  epicMiddleware.run(epics)
+
+  return store
 }
 const restoredState = PersistenceHelper.restoreState()
-console.log('Restored state is')
-console.dir(restoredState)
-console.log('Default state is')
-console.dir(DEFAULT_STATE)
+if (process.env.NODE_ENV === 'development') {
+  console.log('Restored state is')
+  console.dir(restoredState)
+  console.log('Default state is')
+  console.dir(DEFAULT_STATE)
+}
 
-export const store = configureAppStore(DEFAULT_STATE)
+export const store = configureAppStore(restoredState || DEFAULT_STATE)

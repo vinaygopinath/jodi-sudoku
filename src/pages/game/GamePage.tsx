@@ -23,16 +23,14 @@ class GamePage extends React.Component<GameProps, {}> {
 
   getLayoutRowsForSize(size: string): string[] {
     switch (size) {
-      case 'small':
-        return ['3/4', '1/4']
+      case 'small': return ['3/4', '1/4']
       default: return ['full']
     }
   }
 
   getLayoutColumnsForSize(size: string): string[] {
     switch (size) {
-      case 'small':
-        return ['full']
+      case 'small':return ['full']
       default: return ['3/4', '1/4']
     }
   }
