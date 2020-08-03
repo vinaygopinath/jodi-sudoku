@@ -1,0 +1,18 @@
+@import "./_colors.scss";
+
+.square-container {
+  border: 2px solid black;
+  display: flex;
+}
+
+.square {
+  flex: 1 0 calc(25% - 2px);
+  margin: 1px;
+  background: #E9D2FF;
+
+  &::after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+}

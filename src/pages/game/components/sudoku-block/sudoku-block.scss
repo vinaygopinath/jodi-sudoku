@@ -1,0 +1,12 @@
+@import 'src/styles/_common.scss';
+
+.block {
+  background-color: turquoise;
+  border-bottom: 1px solid $block-border-color;
+  & + & {
+    border-right: 1px solid $block-border-color;
+  }
+  &:first-child {
+    border-right: 1px solid $block-border-color;
+  }
+}

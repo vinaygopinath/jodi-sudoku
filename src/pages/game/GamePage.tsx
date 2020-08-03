@@ -2,7 +2,8 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { RootState } from '../../store/rootReducer';
-import { Box, Grid, ResponsiveContext } from 'grommet';
+import { Box, Grid, Keyboard, ResponsiveContext } from 'grommet';
+import SudokuGrid from './components/sudoku-grid/SudokuGrid';
 
 const mapState = (state: RootState) => ({
   difficultyLevel: state.player.difficultyLevel,
@@ -30,7 +31,7 @@ class GamePage extends React.Component<GameProps, {}> {
 
   getLayoutColumnsForSize(size: string): string[] {
     switch (size) {
-      case 'small':return ['full']
+      case 'small': return ['full']
       default: return ['3/4', '1/4']
     }
   }
@@ -38,15 +39,15 @@ class GamePage extends React.Component<GameProps, {}> {
   getLayoutGridAreasForSize(size: string): { name?: string, start?: number[], end?: number[] }[] {
     switch (size) {
       case 'small':
-      return [
-        /**
-         * Small screens use a two-row approach.
-         * The first row takes up 75% of the height (and full width) for the game area
-         * The second row takes up 25% of the height (and full width) for the options/buttons area
-         */
-        { name: 'game', start: [0, 0], end: [0, 0] },
-        { name: 'options', start: [0, 1], end: [0, 1] }
-      ]
+        return [
+          /**
+           * Small screens use a two-row approach.
+           * The first row takes up 75% of the height (and full width) for the game area
+           * The second row takes up 25% of the height (and full width) for the options/buttons area
+           */
+          { name: 'game', start: [0, 0], end: [0, 0] },
+          { name: 'options', start: [0, 1], end: [0, 1] }
+        ]
       default: return [
         /**
          * Medium, large and xlarge screens use a two-column approach.
@@ -63,14 +64,19 @@ class GamePage extends React.Component<GameProps, {}> {
   render() {
 
     return (
-      <ResponsiveContext.Consumer>
-        {size => (
-          <Grid fill rows={this.getLayoutRowsForSize(size)} columns={this.getLayoutColumnsForSize(size)} areas={this.getLayoutGridAreasForSize(size)}>
-            <Box background="green"></Box>
-            <Box background="orange"></Box>
-          </Grid>
-        )}
-      </ResponsiveContext.Consumer>
+      // key.preventDefault()
+      <Keyboard onKeyDown={(key) => { console.log(`Key is ${key.key}`);} } target="document">
+        <ResponsiveContext.Consumer>
+          {size => (
+            <Grid fill rows={this.getLayoutRowsForSize(size)} columns={this.getLayoutColumnsForSize(size)} areas={this.getLayoutGridAreasForSize(size)}>
+              <Box id="grid-section" background="green">
+                <SudokuGrid />
+              </Box>
+              <Box background="orange"></Box>
+            </Grid>
+          )}
+        </ResponsiveContext.Consumer>
+      </Keyboard>
     )
   }
 }
