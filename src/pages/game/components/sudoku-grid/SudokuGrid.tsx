@@ -57,7 +57,7 @@ class SudokuGrid extends React.Component<GridProps, {}> {
         {
           [0, 1, 2].map(i =>
             <Grid columns={{ count: 3, size: 'auto' }}>
-              <SudokuBlock position={(3 * i) + 1} />
+              <SudokuBlock position={(3 * i) + 1}/>
               <SudokuBlock position={(3 * i) + 2}/>
               <SudokuBlock position={(3 * i) + 3}/>
             </Grid>

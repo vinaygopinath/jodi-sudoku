@@ -1,11 +1,15 @@
 @import 'src/styles/_common.scss';
 
 .block {
-  background-color: turquoise;
+  flex: 1 0 calc(25% - 2px);
+  margin: 1px;
+  background: #E9D2FF;
   border-bottom: 1px solid $block-border-color;
+
   & + & {
     border-right: 1px solid $block-border-color;
   }
+
   &:first-child {
     border-right: 1px solid $block-border-color;
   }

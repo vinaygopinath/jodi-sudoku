@@ -56,16 +56,16 @@ export class SudokuBlock extends React.Component<SudokuBlockProps, {}> {
 
   render() {
     return (
-      <Box className={`block square block-${this.props.position}`}>
-        {/* {
+      <Box className="block">
+        {
           [0, 1, 2].map(i =>
-            <Grid columns={{ count: 3, size: 'auto' }} style={{maxHeight: '100%', maxWidth: '100%'}}>
-              <Cell row={this.getCellRow((3 * i) + 1)} column={this.getCellColumn((3*i)+1)}/>
-              <Cell row={this.getCellRow((3 * i) + 2)} column={this.getCellColumn((3*i)+2)}/>
-              <Cell row={this.getCellRow((3 * i) + 3)} column={this.getCellColumn((3*i)+3)}/>
+            <Grid columns={{ count: 3, size: 'auto' }}>
+              <SudokuCell row={this.getCellRow((3 * i) + 1)} column={this.getCellColumn((3 * i) + 1)} />
+              <SudokuCell row={this.getCellRow((3 * i) + 2)} column={this.getCellColumn((3 * i) + 2)} />
+              <SudokuCell row={this.getCellRow((3 * i) + 3)} column={this.getCellColumn((3 * i) + 3)} />
             </Grid>
           )
-        } */}
+        }
       </Box>
     )
   }

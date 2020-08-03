@@ -3,7 +3,7 @@ import { RootState } from '../../../../store/rootReducer';
 import { connect, ConnectedProps } from 'react-redux';
 import { Box, Keyboard } from 'grommet';
 import { RowRange, ColumnRange, CellState } from '../../../../store/game/types';
-import '../../../styles/_common.scss';
+import './sudoku-cell.scss';
 
 const mapState = (state: RootState) => ({
 
@@ -23,7 +23,9 @@ type SudokuCellProps = ConnectedProps<typeof connector> & {
 class SudokuCell extends React.Component<SudokuCellProps, {}> {
   render() {
     return (
-      <Box className="square" background="light-3">{this.props.row},{this.props.column}</Box>
+      <Box className="cell" background={`light-${(this.props.column % 3) + 1}`}>
+        {/* <span>{this.props.row},{this.props.column}</span> */}
+      </Box>
     )
   }
 }
