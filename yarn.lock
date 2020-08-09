@@ -10314,6 +10314,11 @@ stylehacks@^4.0.0:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
+sudoku-umd@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/sudoku-umd/-/sudoku-umd-1.0.1.tgz#881f6fb67029bc1ec5f66d0f6bd5e1dd379c0cc4"
+  integrity sha1-iB9vtnApvB7F9m0Pa9Xh3TecDMQ=
+
 supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"

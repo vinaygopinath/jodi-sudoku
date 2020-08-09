@@ -26,6 +26,7 @@
     "redux-observable": "^1.2.0",
     "rxjs": "^6.5.5",
     "styled-components": "^5.1.1",
+    "sudoku-umd": "^1.0.1",
     "typescript": "3.6.4"
   },
   "scripts": {

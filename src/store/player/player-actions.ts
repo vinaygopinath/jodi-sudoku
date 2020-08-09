@@ -1,5 +1,5 @@
 import { DifficultyLevel } from "../../models/player/DifficultyLevel";
-import { PlayerActionTypes, SELECT_DIFFICULTY_LEVEL, SELECT_PLAYER_TYPE, SELECT_SINGLE_PLAYER_MODE, SELECT_TWO_PLAYER_MODE } from "./types";
+import { PlayerActionTypes, SELECT_DIFFICULTY_LEVEL, SELECT_PLAYER_TYPE, SELECT_SINGLE_PLAYER_MODE, SELECT_TWO_PLAYER_MODE } from "./player-types";
 import { PlayerType } from "../../models/player/PlayerType";
 import { SinglePlayerMode } from "../../models/player/SinglePlayerMode";
 import { TwoPlayerMode } from "../../models/player/TwoPlayerMode";

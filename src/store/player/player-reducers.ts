@@ -1,4 +1,4 @@
-import { PlayerState, PlayerActionTypes, SELECT_DIFFICULTY_LEVEL, SELECT_PLAYER_TYPE, SELECT_SINGLE_PLAYER_MODE, SELECT_TWO_PLAYER_MODE } from "./types";
+import { PlayerState, PlayerActionTypes, SELECT_DIFFICULTY_LEVEL, SELECT_PLAYER_TYPE, SELECT_SINGLE_PLAYER_MODE, SELECT_TWO_PLAYER_MODE } from "./player-types";
 
 export const PLAYER_INITIAL_STATE: PlayerState = {
   difficultyLevel: null,

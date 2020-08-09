@@ -1,12 +1,14 @@
 import { RootState, rootReducer } from "./rootReducer";
 import { createStore, compose, applyMiddleware, Action } from 'redux'
 import { PersistenceHelper } from "./PersistenceHelper";
-import { PLAYER_INITIAL_STATE } from "./player/reducers";
+import { PLAYER_INITIAL_STATE } from "./player/player-reducers";
 import { createEpicMiddleware, Epic, combineEpics } from 'redux-observable';
 import { rootEpic } from './rootEpic';
+import { GAME_INITIAL_STATE } from "./game/game-reducers";
 
 const DEFAULT_STATE: RootState = {
-  player: PLAYER_INITIAL_STATE
+  player: PLAYER_INITIAL_STATE,
+  game: GAME_INITIAL_STATE
 }
 
 function configureAppStore(preloadedState: RootState) {

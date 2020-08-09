@@ -2,7 +2,7 @@ import React from 'react';
 import { Heading, Box, Button, Text, ResponsiveContext, Grid } from "grommet"
 import { RootState } from '../../store/rootReducer';
 import { PlayerType } from '../../models/player/PlayerType';
-import { PlayerActions } from '../../store/player/actions';
+import { PlayerActions } from '../../store/player/player-actions';
 import { connect, ConnectedProps } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DifficultyLevel } from '../../models/player/DifficultyLevel';
