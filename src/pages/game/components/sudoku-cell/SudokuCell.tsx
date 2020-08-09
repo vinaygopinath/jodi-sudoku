@@ -24,7 +24,9 @@ class SudokuCell extends React.Component<SudokuCellProps, {}> {
   render() {
     return (
       <Box className="cell" background={`light-${(this.props.column % 3) + 1}`}>
-        {/* <span>{this.props.row},{this.props.column}</span> */}
+        <div className="cell-content">
+          {this.props.row},{this.props.column}
+        </div>
       </Box>
     )
   }
