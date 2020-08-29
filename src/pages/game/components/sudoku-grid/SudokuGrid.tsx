@@ -23,7 +23,7 @@ type GridState = {
   horizontalMargin: string
 }
 
-class SudokuGrid extends React.Component<GridProps, {}> {
+class SudokuGrid extends React.PureComponent<GridProps, {}> {
 
   state = {
     maxDimension: '100%',
@@ -56,7 +56,7 @@ class SudokuGrid extends React.Component<GridProps, {}> {
       <Box fill style={{ maxHeight: this.state.maxDimension, maxWidth: this.state.maxDimension, marginLeft: this.state.horizontalMargin, marginRight: this.state.horizontalMargin }}>
         {
           [0, 1, 2].map(i =>
-            <Grid columns={{ count: 3, size: 'auto' }}>
+            <Grid columns={{ count: 3, size: 'auto' }} key={i}>
               <SudokuBlock position={(3 * i) + 1}/>
               <SudokuBlock position={(3 * i) + 2}/>
               <SudokuBlock position={(3 * i) + 3}/>
@@ -68,4 +68,6 @@ class SudokuGrid extends React.Component<GridProps, {}> {
   }
 }
 
-export default connector(SudokuGrid)
+// Re-enable when redux state/dispatcher is required
+// export default connector(SudokuGrid)
+export default SudokuGrid

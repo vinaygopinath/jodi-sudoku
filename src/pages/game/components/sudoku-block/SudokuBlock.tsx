@@ -2,14 +2,15 @@ import React from 'react';
 import { Box, Grid } from 'grommet';
 import './sudoku-block.scss';
 import SudokuCell from '../sudoku-cell/SudokuCell';
+import { RowRange, ColumnRange } from '../../../../store/game/game-types';
 
-type SudokuBlockProps = React.HTMLAttributes<HTMLDivElement> & {
+type SudokuBlockProps = {
   position: number
 }
 
-export class SudokuBlock extends React.Component<SudokuBlockProps, {}> {
+export class SudokuBlock extends React.PureComponent<SudokuBlockProps, {}> {
 
-  getCellRow(cellPosition: number) {
+  getCellRow(cellPosition: number): RowRange {
     /**
      * Block positions are one-indexed
      * If the block position is 1,2, or 3, return 0
@@ -32,10 +33,10 @@ export class SudokuBlock extends React.Component<SudokuBlockProps, {}> {
      * If the block position is 8 (blockRowNumber = 2), and the cell position is 7 (cellRowNumber = 2),
      * it is the 7th cell in the 8th block, i.e, cell row is 9
      */
-    return (blockRowNumber * 3) + cellRowNumber + 1
+    return (blockRowNumber * 3) + cellRowNumber + 1 as RowRange
   }
 
-  getCellColumn(cellPosition: number) {
+  getCellColumn(cellPosition: number): ColumnRange {
     /**
      * Block positions are one-indexed
      * If the block position is 1,4, or 7, return 0
@@ -51,7 +52,7 @@ export class SudokuBlock extends React.Component<SudokuBlockProps, {}> {
      */
     const cellColumnNumner = (cellPosition - 1) % 3
 
-    return (blockColumnNumber * 3) + cellColumnNumner + 1
+    return (blockColumnNumber * 3) + cellColumnNumner + 1 as ColumnRange
   }
 
   render() {
@@ -59,7 +60,7 @@ export class SudokuBlock extends React.Component<SudokuBlockProps, {}> {
       <Box className="block">
         {
           [0, 1, 2].map(i =>
-            <Grid columns={{ count: 3, size: 'auto' }}>
+            <Grid columns={{ count: 3, size: 'auto' }} key={i}>
               <SudokuCell row={this.getCellRow((3 * i) + 1)} column={this.getCellColumn((3 * i) + 1)} />
               <SudokuCell row={this.getCellRow((3 * i) + 2)} column={this.getCellColumn((3 * i) + 2)} />
               <SudokuCell row={this.getCellRow((3 * i) + 3)} column={this.getCellColumn((3 * i) + 3)} />

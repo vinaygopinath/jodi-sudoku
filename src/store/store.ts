@@ -37,8 +37,6 @@ const restoredState = PersistenceHelper.restoreState()
 if (process.env.NODE_ENV === 'development') {
   console.log('Restored state is')
   console.dir(restoredState)
-  console.log('Default state is')
-  console.dir(DEFAULT_STATE)
 }
 
 export const store = configureAppStore(restoredState || DEFAULT_STATE)

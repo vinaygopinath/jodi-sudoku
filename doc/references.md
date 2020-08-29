@@ -24,3 +24,9 @@
 
 ## React-router
 * Programmatic redirection: https://dev.to/projectescape/programmatic-navigation-in-react-3p1l
+
+## CSS layouts
+* Content in a fixed aspect-ratio div using padding-bottom: https://www.sodawebmedia.com/blog/create-responsive-square-css/
+
+## Keyboard events
+* Identifying key press based on event.key: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key

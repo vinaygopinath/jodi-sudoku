@@ -1,15 +1,20 @@
-import { GameActionTypes, GameState, CellState } from "./game-types"
+import { GameActionTypes, GameState, CellState, ENTER_CELL_VALUE, getCellStateKey, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE } from "./game-types"
+import { ArrowKey } from "../../utils/KeyboardUtils"
+import { Immutable } from "../../utils/types/immutable"
+
+const ROW_COLUMN_KEY_REGEX = /\d/g
 
 function getInitialCellState(): CellState {
   return {
     value: null,
     active: false,
     highlighted: false,
-    invalid: false
+    invalid: false,
+    initial: false
   }
 }
 
-export const GAME_INITIAL_STATE: GameState = {
+export const GAME_INITIAL_STATE: Immutable<GameState> = {
   cell_row1_column1: getInitialCellState(),
   cell_row1_column2: getInitialCellState(),
   cell_row1_column3: getInitialCellState(),
@@ -95,7 +100,144 @@ export const GAME_INITIAL_STATE: GameState = {
 
 export function gameReducer(state = GAME_INITIAL_STATE, action: GameActionTypes): GameState {
   switch (action.type) {
-
+    case ENTER_CELL_VALUE: return computeNewGameStateAfterValueChange(state, action.payload)
+    case CLEAR_CELL_VALUE: return computeNewGameStateAfterClearCell(state)
+    case CHANGE_CELL_FOCUS: return computeNewGameStateAfterFocusChange(state, action.payload)
+    case MOVE_CELL_FOCUS_BY_ARROW_KEY: return computeNewGameStateOnArrowKey(state, action.payload.arrowKey)
     default: return state
   }
+}
+
+function computeNewGameStateAfterValueChange(state: GameState, data: Immutable<{ value: CellValueRange }>): Immutable<GameState> {
+  const activeCellKeyAndState = getActiveCellKeyAndState(state)
+  if (!activeCellKeyAndState || activeCellKeyAndState.activeCellState.initial) {
+    // no active cell, or active cell is an unmodifiable initial cell. Do nothing
+    return state
+  }
+
+  const { activeKey, activeCellState } = activeCellKeyAndState
+  const { value } = data
+
+  return {
+    ...state,
+    [activeKey]: changeCellValue(activeCellState, value)
+  }
+}
+
+function computeNewGameStateAfterClearCell(state: Immutable<GameState>): Immutable<GameState> {
+  const activeCellKeyAndState = getActiveCellKeyAndState(state)
+  if (!activeCellKeyAndState || activeCellKeyAndState.activeCellState.initial) {
+    // no active cell, or active cell is an unmodifiable initial cell. Do nothing
+    return state
+  }
+
+  const { activeKey, activeCellState } = activeCellKeyAndState
+  return {
+    ...state,
+    [activeKey]: changeCellValue(activeCellState, null)
+  }
+}
+
+function computeNewGameStateAfterFocusChange(state: GameState, data: Immutable<{ row: RowRange, column: ColumnRange, isActive: boolean }>): Immutable<GameState> {
+  const updatedCellKey = getCellStateKey(data.row, data.column)
+
+  const updatedState: GameState = {
+    ...state,
+    [updatedCellKey]: toggleCellActive(getCellStateFromKey(state, updatedCellKey), data.isActive)
+  }
+
+  getUpdatedPreviouslyActiveKeyAndCellStates(state).forEach(it => {
+    updatedState[it.key] = it.updatedCellState
+  })
+
+  return updatedState
+}
+
+function computeNewGameStateOnArrowKey(state: Immutable<GameState>, arrowKey: ArrowKey) {
+  const activeCellKeyAndState = getActiveCellKeyAndState(state)
+  if (!activeCellKeyAndState) {
+    return computeNewGameStateAfterFocusChange(state, { row: 1, column: 1, isActive: true })
+  }
+
+  const { row, column } = getRowAndColumnFromKey(activeCellKeyAndState.activeKey)
+  let newActiveRow = row
+  let newActiveColumn = column
+
+  switch (arrowKey) {
+    case ArrowKey.UP: {
+      if (row === 1) {
+        newActiveRow = 9
+      } else {
+        newActiveRow = (row - 1) as RowRange
+      }
+      break
+    }
+    case ArrowKey.DOWN: {
+      if (row === 9) {
+        newActiveRow = 1
+      } else {
+        newActiveRow = (row + 1) as RowRange
+      }
+      break
+    }
+    case ArrowKey.LEFT: {
+      if (column === 1) {
+        newActiveColumn = 9
+      } else {
+        newActiveColumn = (column - 1) as ColumnRange
+      }
+      break
+    }
+    case ArrowKey.RIGHT: {
+      if (column === 9) {
+        newActiveColumn = 1
+      } else {
+        newActiveColumn = (column + 1) as ColumnRange
+      }
+      break
+    }
+  }
+
+  return computeNewGameStateAfterFocusChange(state, { row: newActiveRow, column: newActiveColumn, isActive: true })
+}
+
+function getActiveCellKeyAndState(state: Immutable<GameState>): Immutable<{ activeKey: CellRowColumnKeyType, activeCellState: CellState } | null> {
+  const activeKey = CellRowColumnKeys.find(key => state[key].active)
+  if (activeKey) {
+    return { activeKey: activeKey, activeCellState: state[activeKey] }
+  }
+
+  return null
+}
+
+function toggleCellActive(cellState: CellState, isActive: boolean): Immutable<CellState> {
+  return {
+    ...cellState,
+    active: isActive
+  }
+}
+
+function changeCellValue(cellState: CellState, value: CellValueRange | null): Immutable<CellState> {
+  return {
+    ...cellState,
+    value: value
+  }
+}
+
+function getRowAndColumnFromKey(key: CellRowColumnKeyType): { row: RowRange, column: ColumnRange } {
+  const matches = key.match(ROW_COLUMN_KEY_REGEX)
+  if (matches == null || matches.length !== 2) {
+    throw Error(`Invalid cell row column key type ${key}`)
+  }
+
+  return {
+    row: parseInt(matches[0]) as RowRange,
+    column: parseInt(matches[1]) as ColumnRange
+  }
+}
+
+function getUpdatedPreviouslyActiveKeyAndCellStates(state: GameState): Array<{ key: keyof GameState, updatedCellState: CellState }> {
+  return CellRowColumnKeys
+    .filter(key => state[key].active)
+    .map(key => ({ key: key, updatedCellState: toggleCellActive(state[key], false) }))
 }

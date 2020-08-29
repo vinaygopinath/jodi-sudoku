@@ -1,9 +1,14 @@
 @import 'src/styles/_common.scss';
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .cell {
+  position: relative;
   flex: 1 0 calc(25% - 2px);
-  justify-content: center;
-  align-items: center;
   margin: 1px;
   background: #E9D2FF;
   border-bottom: 1px solid #a5a5a5;
@@ -11,7 +16,7 @@
   &::after {
     content: '';
     display: block;
-    padding-bottom: 100%;
+    padding-top: 100%;
   }
 
   & + & {
@@ -21,10 +26,21 @@
   &:first-child {
     border-right: 1px solid #a5a5a5;
   }
+}
 
-  .cell-content {
-    position: fixed;
-    font-size: 18px;
+.cell-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 36px;
+
+  &.initial {
     font-weight: bold;
+  }
+  &.active {
+    background-color: greenyellow;
   }
 }

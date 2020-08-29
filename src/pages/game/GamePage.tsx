@@ -4,6 +4,9 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { RootState } from '../../store/rootReducer';
 import { Box, Grid, Keyboard, ResponsiveContext } from 'grommet';
 import SudokuGrid from './components/sudoku-grid/SudokuGrid';
+import { ArrowKey, isArrowKey, getArrowKey, isCellValueKey, getCellValueKey, isDeleteOrBackspaceKey } from '../../utils/KeyboardUtils';
+import { moveCellFocusByArrowKey, enterCellValue, clearCellValue } from '../../store/game/game-actions';
+import { CellValueRange } from '../../store/game/game-types';
 
 const mapState = (state: RootState) => ({
   difficultyLevel: state.player.difficultyLevel,
@@ -11,7 +14,9 @@ const mapState = (state: RootState) => ({
 })
 
 const mapDispatch = {
-
+  moveCellFocusByArrowKey: (arrowKey: ArrowKey) => moveCellFocusByArrowKey(arrowKey),
+  enterCellValue: (value: CellValueRange) => enterCellValue(value),
+  clearCellValue: () => clearCellValue()
 }
 
 const connector = connect(mapState, mapDispatch)
@@ -60,12 +65,31 @@ class GamePage extends React.Component<GameProps, {}> {
     }
   }
 
+  handleKeyboardEvent(event: React.KeyboardEvent<HTMLElement>) {
+    const isArrow = isArrowKey(event)
+    const isCellValue = isCellValueKey(event)
+    const isDeleteOrBackspace = isDeleteOrBackspaceKey(event)
+    if (!isArrow && !isCellValue && !isDeleteOrBackspace) {
+      return
+    }
+
+    event.preventDefault()
+    if (isCellValue) {
+      const numberKey = getCellValueKey(event)
+      this.props.enterCellValue(numberKey)
+    } else if (isArrow) {
+      const arrowKey = getArrowKey(event)
+      this.props.moveCellFocusByArrowKey(arrowKey)
+    } else if (isDeleteOrBackspace) {
+      this.props.clearCellValue()
+    }
+  }
+
 
   render() {
 
     return (
-      // key.preventDefault()
-      <Keyboard onKeyDown={(key) => { console.log(`Key is ${key.key}`);} } target="document">
+      <Keyboard onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => { console.log(`Key is ${event.key}`); this.handleKeyboardEvent(event) }} target="document">
         <ResponsiveContext.Consumer>
           {size => (
             <Grid fill rows={this.getLayoutRowsForSize(size)} columns={this.getLayoutColumnsForSize(size)} areas={this.getLayoutGridAreasForSize(size)}>
