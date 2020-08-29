@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Grid } from 'grommet';
 import './sudoku-block.scss';
 import SudokuCell from '../sudoku-cell/SudokuCell';
-import { RowRange, ColumnRange } from '../../../../store/game/game-types';
+import { RowRange, ColumnRange } from '../../../../store/grid/grid-types';
 
 type SudokuBlockProps = {
   position: number

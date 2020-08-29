@@ -30,3 +30,9 @@
 
 ## Keyboard events
 * Identifying key press based on event.key: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+* Implementing undo history: https://redux.js.org/recipes/implementing-undo-history
+* redux-undo with Typescript: https://redux-undo.js.org/main/working-with-ts
+
+## Unicode regex
+* XRegExp library for Unicode (`P{L}`, `P{N}`..) matching: https://github.com/slevithan/xregexp
+* XRegExp online test: https://www.regexplanet.com/advanced/xregexp/index.html

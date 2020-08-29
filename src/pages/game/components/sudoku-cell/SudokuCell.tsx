@@ -2,15 +2,15 @@ import React from 'react';
 import { RootState } from '../../../../store/rootReducer';
 import { connect, ConnectedProps } from 'react-redux';
 import { Box } from 'grommet';
-import { RowRange, ColumnRange, getCellStateKey, CellValueRange, GameActionTypes } from '../../../../store/game/game-types';
+import { RowRange, ColumnRange, getCellStateKey, CellValueRange, GridActionTypes } from '../../../../store/grid/grid-types';
 import './sudoku-cell.scss';
-import { changeCellFocus } from '../../../../store/game/game-actions';
+import { changeCellFocus } from '../../../../store/grid/grid-actions';
 import { Dispatch } from 'redux';
 import classnames from 'classnames'
 
 const mapState = (state: RootState, ownProps: { row: RowRange, column: ColumnRange }) => {
   const cellStateKey = getCellStateKey(ownProps.row, ownProps.column)
-  const cellState = state.game[cellStateKey]
+  const cellState = state.grid.present[cellStateKey]
 
   return {
     value: cellState.value,
@@ -21,7 +21,7 @@ const mapState = (state: RootState, ownProps: { row: RowRange, column: ColumnRan
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<GameActionTypes>, ownProps: { row: RowRange, column: ColumnRange }) => {
+const mapDispatchToProps = (dispatch: Dispatch<GridActionTypes>, ownProps: { row: RowRange, column: ColumnRange }) => {
   return {
     changeFocus: (isFocussed: boolean) => {
       dispatch(changeCellFocus(ownProps.row, ownProps.column, isFocussed))

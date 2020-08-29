@@ -1,4 +1,10 @@
-import { CellValueRange, RowRange } from "../store/game/game-types"
+import { CellValueRange, RowRange } from "../store/grid/grid-types"
+import XRegExp from 'xregexp'
+
+const DELETE_BACKSPACE_KEYS = ["Delete", "Backspace"]
+const ARROW_KEYS = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Left", "Right", "Up", "Down"]
+const CELL_VALUE_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+const ANY_ALPHANUMERIC_KEY_REGEX = XRegExp("^[\\p{L}\\p{N}]$") // single Unicode character
 
 export enum ArrowKey {
   UP,
@@ -8,15 +14,27 @@ export enum ArrowKey {
 }
 
 export function isDeleteOrBackspaceKey(event: React.KeyboardEvent<HTMLElement>): boolean {
-  return ["Delete", "Backspace"].includes(event.key)
+  return DELETE_BACKSPACE_KEYS.includes(event.key)
 }
 
 export function isArrowKey(event: React.KeyboardEvent<HTMLElement>): boolean {
-  return ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Left", "Right", "Up", "Down"].includes(event.key)
+  return ARROW_KEYS.includes(event.key)
 }
 
 export function isCellValueKey(event: React.KeyboardEvent<HTMLElement>): boolean {
-  return ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)
+  return CELL_VALUE_KEYS.includes(event.key)
+}
+
+export function isUndoKey(event: React.KeyboardEvent<HTMLElement>): boolean {
+  return event.ctrlKey && event.key === "z"
+}
+
+export function isRedoKey(event: React.KeyboardEvent<HTMLElement>): boolean {
+  return event.ctrlKey && event.shiftKey && event.key === "Z"
+}
+
+export function isUnsupportedKey(event: React.KeyboardEvent<HTMLElement>): boolean {
+  return !event.ctrlKey && !event.metaKey && event.key !== "Alt" && ANY_ALPHANUMERIC_KEY_REGEX.test(event.key)
 }
 
 export function getArrowKey(event: React.KeyboardEvent<HTMLElement>): ArrowKey {

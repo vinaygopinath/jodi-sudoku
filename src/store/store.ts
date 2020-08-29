@@ -1,17 +1,19 @@
 import { RootState, rootReducer } from "./rootReducer";
 import { createStore, compose, applyMiddleware, Action } from 'redux'
+import { StateWithHistory } from 'redux-undo'
 import { PersistenceHelper } from "./PersistenceHelper";
 import { PLAYER_INITIAL_STATE } from "./player/player-reducers";
 import { createEpicMiddleware, Epic, combineEpics } from 'redux-observable';
 import { rootEpic } from './rootEpic';
-import { GAME_INITIAL_STATE } from "./game/game-reducers";
+import { GRID_INITIAL_STATE as GRID_INITIAL_STATE } from "./grid/grid-reducers";
+import { GridState } from "./grid/grid-types";
 
 const DEFAULT_STATE: RootState = {
   player: PLAYER_INITIAL_STATE,
-  game: GAME_INITIAL_STATE
+  grid: (GRID_INITIAL_STATE as any) as StateWithHistory<GridState>
 }
 
-function configureAppStore(preloadedState: RootState) {
+function configureAppStore(preloadedState: RootState, isRestored: boolean) {
   const middlewares = []
 
   const epicMiddleware = createEpicMiddleware();
@@ -39,4 +41,4 @@ if (process.env.NODE_ENV === 'development') {
   console.dir(restoredState)
 }
 
-export const store = configureAppStore(restoredState || DEFAULT_STATE)
+export const store = configureAppStore(restoredState || DEFAULT_STATE, !!restoredState)

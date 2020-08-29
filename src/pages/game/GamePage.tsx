@@ -4,9 +4,10 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { RootState } from '../../store/rootReducer';
 import { Box, Grid, Keyboard, ResponsiveContext } from 'grommet';
 import SudokuGrid from './components/sudoku-grid/SudokuGrid';
-import { ArrowKey, isArrowKey, getArrowKey, isCellValueKey, getCellValueKey, isDeleteOrBackspaceKey } from '../../utils/KeyboardUtils';
-import { moveCellFocusByArrowKey, enterCellValue, clearCellValue } from '../../store/game/game-actions';
-import { CellValueRange } from '../../store/game/game-types';
+import { ArrowKey, isArrowKey, getArrowKey, isCellValueKey, getCellValueKey, isDeleteOrBackspaceKey, isUndoKey, isRedoKey, isUnsupportedKey } from '../../utils/KeyboardUtils';
+import { moveCellFocusByArrowKey, enterCellValue, clearCellValue } from '../../store/grid/grid-actions';
+import { CellValueRange } from '../../store/grid/grid-types';
+import { ActionCreators as UndoActionCreators } from 'redux-undo';
 
 const mapState = (state: RootState) => ({
   difficultyLevel: state.player.difficultyLevel,
@@ -16,7 +17,9 @@ const mapState = (state: RootState) => ({
 const mapDispatch = {
   moveCellFocusByArrowKey: (arrowKey: ArrowKey) => moveCellFocusByArrowKey(arrowKey),
   enterCellValue: (value: CellValueRange) => enterCellValue(value),
-  clearCellValue: () => clearCellValue()
+  clearCellValue: () => clearCellValue(),
+  undo: () => UndoActionCreators.undo(),
+  redo: () => UndoActionCreators.redo()
 }
 
 const connector = connect(mapState, mapDispatch)
@@ -69,7 +72,12 @@ class GamePage extends React.Component<GameProps, {}> {
     const isArrow = isArrowKey(event)
     const isCellValue = isCellValueKey(event)
     const isDeleteOrBackspace = isDeleteOrBackspaceKey(event)
-    if (!isArrow && !isCellValue && !isDeleteOrBackspace) {
+    const isUndo = isUndoKey(event)
+    const isRedo = isRedoKey(event)
+    if (!isArrow && !isCellValue && !isDeleteOrBackspace && !isUndo && !isRedo) {
+      if (isUnsupportedKey(event)) {
+        event.preventDefault()
+      }
       return
     }
 
@@ -82,6 +90,10 @@ class GamePage extends React.Component<GameProps, {}> {
       this.props.moveCellFocusByArrowKey(arrowKey)
     } else if (isDeleteOrBackspace) {
       this.props.clearCellValue()
+    } else if (isUndo) {
+      this.props.undo()
+    } else if (isRedo) {
+      this.props.redo()
     }
   }
 

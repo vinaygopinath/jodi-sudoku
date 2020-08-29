@@ -45,12 +45,12 @@ interface MoveCellFocusByArrowKeyAction extends Action {
     arrowKey: ArrowKey
   }
 }
-export type GameActionTypes = EnterCellValueAction | ClearCellValueAction | ChangeCellFocusAction | MoveCellFocusByArrowKeyAction
+export type GridActionTypes = EnterCellValueAction | ClearCellValueAction | ChangeCellFocusAction | MoveCellFocusByArrowKeyAction
 
 export type CellRowColumnKeyType = "cell_row1_column1" | "cell_row1_column2" | "cell_row1_column3" | "cell_row1_column4" | "cell_row1_column5" | "cell_row1_column6" | "cell_row1_column7" | "cell_row1_column8" | "cell_row1_column9" | "cell_row2_column1" | "cell_row2_column2" | "cell_row2_column3" | "cell_row2_column4" | "cell_row2_column5" | "cell_row2_column6" | "cell_row2_column7" | "cell_row2_column8" | "cell_row2_column9" | "cell_row3_column1" | "cell_row3_column2" | "cell_row3_column3" | "cell_row3_column4" | "cell_row3_column5" | "cell_row3_column6" | "cell_row3_column7" | "cell_row3_column8" | "cell_row3_column9" | "cell_row4_column1" | "cell_row4_column2" | "cell_row4_column3" | "cell_row4_column4" | "cell_row4_column5" | "cell_row4_column6" | "cell_row4_column7" | "cell_row4_column8" | "cell_row4_column9" | "cell_row5_column1" | "cell_row5_column2" | "cell_row5_column3" | "cell_row5_column4" | "cell_row5_column5" | "cell_row5_column6" | "cell_row5_column7" | "cell_row5_column8" | "cell_row5_column9" | "cell_row6_column1" | "cell_row6_column2" | "cell_row6_column3" | "cell_row6_column4" | "cell_row6_column5" | "cell_row6_column6" | "cell_row6_column7" | "cell_row6_column8" | "cell_row6_column9" | "cell_row7_column1" | "cell_row7_column2" | "cell_row7_column3" | "cell_row7_column4" | "cell_row7_column5" | "cell_row7_column6" | "cell_row7_column7" | "cell_row7_column8" | "cell_row7_column9" | "cell_row8_column1" | "cell_row8_column2" | "cell_row8_column3" | "cell_row8_column4" | "cell_row8_column5" | "cell_row8_column6" | "cell_row8_column7" | "cell_row8_column8" | "cell_row8_column9" | "cell_row9_column1" | "cell_row9_column2" | "cell_row9_column3" | "cell_row9_column4" | "cell_row9_column5" | "cell_row9_column6" | "cell_row9_column7" | "cell_row9_column8" | "cell_row9_column9"
 export const CellRowColumnKeys: Array<CellRowColumnKeyType> = ["cell_row1_column1", "cell_row1_column2", "cell_row1_column3", "cell_row1_column4", "cell_row1_column5", "cell_row1_column6", "cell_row1_column7", "cell_row1_column8", "cell_row1_column9", "cell_row2_column1", "cell_row2_column2", "cell_row2_column3", "cell_row2_column4", "cell_row2_column5", "cell_row2_column6", "cell_row2_column7", "cell_row2_column8", "cell_row2_column9", "cell_row3_column1", "cell_row3_column2", "cell_row3_column3", "cell_row3_column4", "cell_row3_column5", "cell_row3_column6", "cell_row3_column7", "cell_row3_column8", "cell_row3_column9", "cell_row4_column1", "cell_row4_column2", "cell_row4_column3", "cell_row4_column4", "cell_row4_column5", "cell_row4_column6", "cell_row4_column7", "cell_row4_column8", "cell_row4_column9", "cell_row5_column1", "cell_row5_column2", "cell_row5_column3", "cell_row5_column4", "cell_row5_column5", "cell_row5_column6", "cell_row5_column7", "cell_row5_column8", "cell_row5_column9", "cell_row6_column1", "cell_row6_column2", "cell_row6_column3", "cell_row6_column4", "cell_row6_column5", "cell_row6_column6", "cell_row6_column7", "cell_row6_column8", "cell_row6_column9", "cell_row7_column1", "cell_row7_column2", "cell_row7_column3", "cell_row7_column4", "cell_row7_column5", "cell_row7_column6", "cell_row7_column7", "cell_row7_column8", "cell_row7_column9", "cell_row8_column1", "cell_row8_column2", "cell_row8_column3", "cell_row8_column4", "cell_row8_column5", "cell_row8_column6", "cell_row8_column7", "cell_row8_column8", "cell_row8_column9", "cell_row9_column1", "cell_row9_column2", "cell_row9_column3", "cell_row9_column4", "cell_row9_column5", "cell_row9_column6", "cell_row9_column7", "cell_row9_column8", "cell_row9_column9"]
 
-export interface GameState {
+export interface GridState {
   cell_row1_column1: CellState,
   cell_row1_column2: CellState,
   cell_row1_column3: CellState,
@@ -137,11 +137,11 @@ export function getCellStateKey(row: RowRange, column: ColumnRange): CellRowColu
   return `cell_row${row}_column${column}` as CellRowColumnKeyType
 }
 
-export function getCellStateKeyFromData(data: { row: RowRange, column: ColumnRange, [key: string]: any}): keyof GameState {
-  return `cell_row${data.row}_column${data.column}` as keyof GameState
+export function getCellStateKeyFromData(data: { row: RowRange, column: ColumnRange, [key: string]: any}): keyof GridState {
+  return `cell_row${data.row}_column${data.column}` as keyof GridState
 }
 
-export function getCellStateFromKey(state: GameState, key: string): CellState {
+export function getCellStateFromKey(state: GridState, key: string): CellState {
   if (!isCellRowColumnKey(key)) {
     throw Error(`Invalid key ${key}. Expected a key of the format "cell_row(num1)_column(num2)"`)
   }
@@ -149,7 +149,7 @@ export function getCellStateFromKey(state: GameState, key: string): CellState {
   return state[key]
 }
 
-export function getCellState(state: GameState, row: RowRange, column: ColumnRange): CellState {
+export function getCellState(state: GridState, row: RowRange, column: ColumnRange): CellState {
   return state[getCellStateKey(row, column)]
 }
 

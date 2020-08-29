@@ -1,4 +1,4 @@
-import { GameActionTypes, GameState, CellState, ENTER_CELL_VALUE, getCellStateKey, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE } from "./game-types"
+import { GridActionTypes, GridState, CellState, ENTER_CELL_VALUE, getCellStateKey, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE } from "./grid-types"
 import { ArrowKey } from "../../utils/KeyboardUtils"
 import { Immutable } from "../../utils/types/immutable"
 
@@ -14,7 +14,7 @@ function getInitialCellState(): CellState {
   }
 }
 
-export const GAME_INITIAL_STATE: Immutable<GameState> = {
+export const GRID_INITIAL_STATE: GridState = {
   cell_row1_column1: getInitialCellState(),
   cell_row1_column2: getInitialCellState(),
   cell_row1_column3: getInitialCellState(),
@@ -98,17 +98,17 @@ export const GAME_INITIAL_STATE: Immutable<GameState> = {
   cell_row9_column9: getInitialCellState()
 }
 
-export function gameReducer(state = GAME_INITIAL_STATE, action: GameActionTypes): GameState {
+export function gridReducer(state = GRID_INITIAL_STATE, action: GridActionTypes): GridState {
   switch (action.type) {
-    case ENTER_CELL_VALUE: return computeNewGameStateAfterValueChange(state, action.payload)
-    case CLEAR_CELL_VALUE: return computeNewGameStateAfterClearCell(state)
-    case CHANGE_CELL_FOCUS: return computeNewGameStateAfterFocusChange(state, action.payload)
-    case MOVE_CELL_FOCUS_BY_ARROW_KEY: return computeNewGameStateOnArrowKey(state, action.payload.arrowKey)
+    case ENTER_CELL_VALUE: return computeNewGridStateAfterValueChange(state, action.payload)
+    case CLEAR_CELL_VALUE: return computeNewGridStateAfterClearCell(state)
+    case CHANGE_CELL_FOCUS: return computeNewGridStateAfterFocusChange(state, action.payload)
+    case MOVE_CELL_FOCUS_BY_ARROW_KEY: return computeNewGridStateOnArrowKey(state, action.payload.arrowKey)
     default: return state
   }
 }
 
-function computeNewGameStateAfterValueChange(state: GameState, data: Immutable<{ value: CellValueRange }>): Immutable<GameState> {
+function computeNewGridStateAfterValueChange(state: GridState, data: Immutable<{ value: CellValueRange }>): Immutable<GridState> {
   const activeCellKeyAndState = getActiveCellKeyAndState(state)
   if (!activeCellKeyAndState || activeCellKeyAndState.activeCellState.initial) {
     // no active cell, or active cell is an unmodifiable initial cell. Do nothing
@@ -124,7 +124,7 @@ function computeNewGameStateAfterValueChange(state: GameState, data: Immutable<{
   }
 }
 
-function computeNewGameStateAfterClearCell(state: Immutable<GameState>): Immutable<GameState> {
+function computeNewGridStateAfterClearCell(state: Immutable<GridState>): Immutable<GridState> {
   const activeCellKeyAndState = getActiveCellKeyAndState(state)
   if (!activeCellKeyAndState || activeCellKeyAndState.activeCellState.initial) {
     // no active cell, or active cell is an unmodifiable initial cell. Do nothing
@@ -138,10 +138,10 @@ function computeNewGameStateAfterClearCell(state: Immutable<GameState>): Immutab
   }
 }
 
-function computeNewGameStateAfterFocusChange(state: GameState, data: Immutable<{ row: RowRange, column: ColumnRange, isActive: boolean }>): Immutable<GameState> {
+function computeNewGridStateAfterFocusChange(state: GridState, data: Immutable<{ row: RowRange, column: ColumnRange, isActive: boolean }>): Immutable<GridState> {
   const updatedCellKey = getCellStateKey(data.row, data.column)
 
-  const updatedState: GameState = {
+  const updatedState: GridState = {
     ...state,
     [updatedCellKey]: toggleCellActive(getCellStateFromKey(state, updatedCellKey), data.isActive)
   }
@@ -153,10 +153,10 @@ function computeNewGameStateAfterFocusChange(state: GameState, data: Immutable<{
   return updatedState
 }
 
-function computeNewGameStateOnArrowKey(state: Immutable<GameState>, arrowKey: ArrowKey) {
+function computeNewGridStateOnArrowKey(state: Immutable<GridState>, arrowKey: ArrowKey) {
   const activeCellKeyAndState = getActiveCellKeyAndState(state)
   if (!activeCellKeyAndState) {
-    return computeNewGameStateAfterFocusChange(state, { row: 1, column: 1, isActive: true })
+    return computeNewGridStateAfterFocusChange(state, { row: 1, column: 1, isActive: true })
   }
 
   const { row, column } = getRowAndColumnFromKey(activeCellKeyAndState.activeKey)
@@ -198,10 +198,10 @@ function computeNewGameStateOnArrowKey(state: Immutable<GameState>, arrowKey: Ar
     }
   }
 
-  return computeNewGameStateAfterFocusChange(state, { row: newActiveRow, column: newActiveColumn, isActive: true })
+  return computeNewGridStateAfterFocusChange(state, { row: newActiveRow, column: newActiveColumn, isActive: true })
 }
 
-function getActiveCellKeyAndState(state: Immutable<GameState>): Immutable<{ activeKey: CellRowColumnKeyType, activeCellState: CellState } | null> {
+function getActiveCellKeyAndState(state: Immutable<GridState>): Immutable<{ activeKey: CellRowColumnKeyType, activeCellState: CellState } | null> {
   const activeKey = CellRowColumnKeys.find(key => state[key].active)
   if (activeKey) {
     return { activeKey: activeKey, activeCellState: state[activeKey] }
@@ -236,7 +236,7 @@ function getRowAndColumnFromKey(key: CellRowColumnKeyType): { row: RowRange, col
   }
 }
 
-function getUpdatedPreviouslyActiveKeyAndCellStates(state: GameState): Array<{ key: keyof GameState, updatedCellState: CellState }> {
+function getUpdatedPreviouslyActiveKeyAndCellStates(state: GridState): Array<{ key: keyof GridState, updatedCellState: CellState }> {
   return CellRowColumnKeys
     .filter(key => state[key].active)
     .map(key => ({ key: key, updatedCellState: toggleCellActive(state[key], false) }))
