@@ -4,8 +4,10 @@ import { RootState } from './rootReducer'
 import { filter, mergeMap } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
 import { PersistenceHelper } from './PersistenceHelper'
+import { gameEpics } from './game/game-epics'
 
 export const rootEpic = combineEpics(
+  gameEpics,
   persistState
 )
 

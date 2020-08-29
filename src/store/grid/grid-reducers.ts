@@ -1,5 +1,6 @@
-import { GridActionTypes, GridState, CellState, ENTER_CELL_VALUE, getCellStateKey, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE } from "./grid-types"
+import { GridActionTypes, GridState, CellState, ENTER_CELL_VALUE, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE, INITIALISE_CELL } from "./grid-types"
 import { ArrowKey } from "../../utils/KeyboardUtils"
+import { getCellKey } from "../../utils/SudokuUtils"
 import { Immutable } from "../../utils/types/immutable"
 
 const ROW_COLUMN_KEY_REGEX = /\d/g
@@ -104,7 +105,18 @@ export function gridReducer(state = GRID_INITIAL_STATE, action: GridActionTypes)
     case CLEAR_CELL_VALUE: return computeNewGridStateAfterClearCell(state)
     case CHANGE_CELL_FOCUS: return computeNewGridStateAfterFocusChange(state, action.payload)
     case MOVE_CELL_FOCUS_BY_ARROW_KEY: return computeNewGridStateOnArrowKey(state, action.payload.arrowKey)
+    case INITIALISE_CELL: return computeNewStateAfterInitialiseCell(state, action.payload)
     default: return state
+  }
+}
+
+function computeNewStateAfterInitialiseCell(state: Immutable<GridState>, { row, column, value}: Immutable<{ row: RowRange, column: ColumnRange, value: CellValueRange | null }>): GridState {
+  const cellKey = getCellKey(row, column)
+  const cellState = getCellStateFromKey(state, cellKey)
+
+  return {
+    ...state,
+    [cellKey]: setInitialCellValue(cellState, value)
   }
 }
 
@@ -139,7 +151,7 @@ function computeNewGridStateAfterClearCell(state: Immutable<GridState>): Immutab
 }
 
 function computeNewGridStateAfterFocusChange(state: GridState, data: Immutable<{ row: RowRange, column: ColumnRange, isActive: boolean }>): Immutable<GridState> {
-  const updatedCellKey = getCellStateKey(data.row, data.column)
+  const updatedCellKey = getCellKey(data.row, data.column)
 
   const updatedState: GridState = {
     ...state,
@@ -221,6 +233,14 @@ function changeCellValue(cellState: CellState, value: CellValueRange | null): Im
   return {
     ...cellState,
     value: value
+  }
+}
+
+function setInitialCellValue(cellState: CellState, value: CellValueRange | null): Immutable<CellState> {
+  return {
+    ...cellState,
+    value: value,
+    initial: true
   }
 }
 

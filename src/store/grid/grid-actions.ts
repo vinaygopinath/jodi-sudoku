@@ -1,10 +1,21 @@
-import { RowRange, ColumnRange, CellValueRange, GridActionTypes, ENTER_CELL_VALUE, CHANGE_CELL_FOCUS, MOVE_CELL_FOCUS_BY_ARROW_KEY, CLEAR_CELL_VALUE } from "./grid-types";
+import { RowRange, ColumnRange, CellValueRange, GridActionTypes, ENTER_CELL_VALUE, CHANGE_CELL_FOCUS, MOVE_CELL_FOCUS_BY_ARROW_KEY, CLEAR_CELL_VALUE, INITIALISE_CELL } from "./grid-types";
 import { ArrowKey } from "../../utils/KeyboardUtils";
 
 export function enterCellValue(value: CellValueRange): GridActionTypes {
   return {
     type: ENTER_CELL_VALUE,
     payload: {
+      value: value
+    }
+  }
+}
+
+export function initialiseCell(row: RowRange, column: ColumnRange, value: CellValueRange | null): GridActionTypes {
+  return {
+    type: INITIALISE_CELL,
+    payload: {
+      row: row,
+      column: column,
       value: value
     }
   }

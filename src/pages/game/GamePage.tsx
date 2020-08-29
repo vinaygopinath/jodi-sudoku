@@ -8,16 +8,20 @@ import { ArrowKey, isArrowKey, getArrowKey, isCellValueKey, getCellValueKey, isD
 import { moveCellFocusByArrowKey, enterCellValue, clearCellValue } from '../../store/grid/grid-actions';
 import { CellValueRange } from '../../store/grid/grid-types';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
+import { generateSudokuPuzzle } from '../../store/game/game-actions';
+import { Redirect } from 'react-router-dom';
 
 const mapState = (state: RootState) => ({
   difficultyLevel: state.player.difficultyLevel,
-  playerType: state.player.playerType
+  playerType: state.player.playerType,
+  initialised: state.game.initialised
 })
 
 const mapDispatch = {
   moveCellFocusByArrowKey: (arrowKey: ArrowKey) => moveCellFocusByArrowKey(arrowKey),
   enterCellValue: (value: CellValueRange) => enterCellValue(value),
   clearCellValue: () => clearCellValue(),
+  generateSudokuPuzzle: () => generateSudokuPuzzle(),
   undo: () => UndoActionCreators.undo(),
   redo: () => UndoActionCreators.redo()
 }
@@ -29,6 +33,12 @@ type GameProps = ConnectedProps<typeof connector> & WithTranslation & {
 }
 
 class GamePage extends React.Component<GameProps, {}> {
+
+  componentDidMount() {
+    if (this.props.difficultyLevel != null && this.props.playerType != null && !this.props.initialised) {
+      this.props.generateSudokuPuzzle()
+    }
+  }
 
   getLayoutRowsForSize(size: string): string[] {
     switch (size) {
@@ -99,6 +109,12 @@ class GamePage extends React.Component<GameProps, {}> {
 
 
   render() {
+
+    if (this.props.difficultyLevel == null || this.props.playerType == null) {
+      return(
+        <Redirect to="/"></Redirect>
+      )
+    }
 
     return (
       <Keyboard onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => { console.log(`Key is ${event.key}`); this.handleKeyboardEvent(event) }} target="document">

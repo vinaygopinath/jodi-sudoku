@@ -2,14 +2,15 @@ import React from 'react';
 import { RootState } from '../../../../store/rootReducer';
 import { connect, ConnectedProps } from 'react-redux';
 import { Box } from 'grommet';
-import { RowRange, ColumnRange, getCellStateKey, CellValueRange, GridActionTypes } from '../../../../store/grid/grid-types';
+import { RowRange, ColumnRange, CellValueRange } from '../../../../store/grid/grid-types';
 import './sudoku-cell.scss';
 import { changeCellFocus } from '../../../../store/grid/grid-actions';
-import { Dispatch } from 'redux';
+import { Dispatch, AnyAction } from 'redux';
 import classnames from 'classnames'
+import { getCellKey } from '../../../../utils/SudokuUtils';
 
 const mapState = (state: RootState, ownProps: { row: RowRange, column: ColumnRange }) => {
-  const cellStateKey = getCellStateKey(ownProps.row, ownProps.column)
+  const cellStateKey = getCellKey(ownProps.row, ownProps.column)
   const cellState = state.grid.present[cellStateKey]
 
   return {
@@ -21,13 +22,11 @@ const mapState = (state: RootState, ownProps: { row: RowRange, column: ColumnRan
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<GridActionTypes>, ownProps: { row: RowRange, column: ColumnRange }) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>, ownProps: { row: RowRange, column: ColumnRange }) => ({
     changeFocus: (isFocussed: boolean) => {
       dispatch(changeCellFocus(ownProps.row, ownProps.column, isFocussed))
     }
-  }
-}
+})
 
 const connector = connect(mapState, mapDispatchToProps)
 
@@ -37,7 +36,8 @@ type SudokuCellProps = ConnectedProps<typeof connector> & {
   active?: boolean,
   highlighted?: boolean,
   invalid?: boolean,
-  value: CellValueRange | null
+  value: CellValueRange | null,
+  initial?: boolean
 }
 
 type SudokuCellState = {
