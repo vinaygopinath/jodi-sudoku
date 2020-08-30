@@ -21,7 +21,7 @@ function generateSudokuPuzzle(
   return action$.pipe(
     ofType(GENERATE_SUDOKU_PUZZLE),
     mergeMap(() => {
-      const difficultyLevel = state$.value.player.difficultyLevel || DifficultyLevel.EASY
+      const difficultyLevel = state$.value.player.difficultyLevel
       if (!difficultyLevel) {
         console.error('Generate sudoku puzzle called when difficulty level was not set')
         return EMPTY
@@ -34,7 +34,7 @@ function generateSudokuPuzzle(
   )
 }
 
-export function createInitialiseActionsForPuzzle(puzzle: SudokuPuzzle): Array<GridActionTypes> {
+function createInitialiseActionsForPuzzle(puzzle: SudokuPuzzle): Array<GridActionTypes> {
   return Object.keys(puzzle)
   .filter(key => puzzle[key as CellRowColumnKeyType]!!) // Don't create initialise actions for cells without values
   .map(key => {

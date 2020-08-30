@@ -4,7 +4,7 @@ import sudoku from 'sudoku-umd';
 import { RowRange, ColumnRange, CellRowColumnKeyType, CellValueRange } from "../store/grid/grid-types";
 
 export function generateSudokuPuzzle(difficultyLevel: DifficultyLevel): SudokuPuzzle {
-  const sudokuString = sudoku.generate(DifficultyLevel[difficultyLevel].toLowerCase())
+  const sudokuString = sudoku.generate(getDifficultyLevelString(difficultyLevel))
   // Force Typescript to treat the empty {} as SudokuPuzzle
   // We'll fill in the properties in the loop
   const puzzle: SudokuPuzzle = {} as SudokuPuzzle
@@ -35,4 +35,13 @@ export function getRowAndColumnFromIndex(index: number): { row: RowRange, column
   const column = (index % 9) + 1 as ColumnRange
 
   return { row, column }
+}
+
+function getDifficultyLevelString(difficultyLevel: DifficultyLevel): string {
+  switch (difficultyLevel) {
+    case DifficultyLevel.EASY: return 'easy';
+    case DifficultyLevel.MEDIUM: return 'medium';
+    case DifficultyLevel.HARD: return 'hard';
+    case DifficultyLevel.EXTREME: return 'very-hard';
+  }
 }
