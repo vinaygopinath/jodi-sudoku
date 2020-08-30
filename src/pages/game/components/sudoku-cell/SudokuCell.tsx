@@ -49,22 +49,14 @@ class SudokuCell extends React.PureComponent<SudokuCellProps, SudokuCellState> {
   render() {
     // console.log(`Rendering cell ${getCellStateKey(this.props.row, this.props.column)} with active ${this.props.active!!}`);
     const contentClasses = classnames({
-      'cell-content': true,
+      'cell': true,
       active: this.props.active,
       initial: this.props.initial
     })
     return (
-      <Box border className="cell" background={`light-${(this.props.column % 3) + 1}`} hoverIndicator focusIndicator={false} onClick={(e: any) => this.props.changeFocus(true)}>
-        <div className={contentClasses}>{this.props.value || ''}</div>
+      <Box className={contentClasses} border={false} focusIndicator={false} onClick={(e: any) => this.props.changeFocus(true)}>
+        <div className="cell-content">{this.props.value || ''}</div>
       </Box>
-    )
-  }
-
-  addDummyBoxIfActive() {
-    return this.props.active && (
-      <div style={{ backgroundColor: 'orange', width: '10px', height: '10px'}}>
-
-      </div>
     )
   }
 }

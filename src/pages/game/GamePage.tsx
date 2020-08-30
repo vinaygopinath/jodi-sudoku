@@ -1,4 +1,5 @@
 import React from 'react';
+import './game-page.scss';
 import { connect, ConnectedProps } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { RootState } from '../../store/rootReducer';
@@ -121,10 +122,10 @@ class GamePage extends React.Component<GameProps, {}> {
         <ResponsiveContext.Consumer>
           {size => (
             <Grid fill rows={this.getLayoutRowsForSize(size)} columns={this.getLayoutColumnsForSize(size)} areas={this.getLayoutGridAreasForSize(size)}>
-              <Box id="grid-section" background="green">
+              <Box id="grid-section">
                 <SudokuGrid />
               </Box>
-              <Box background="orange"></Box>
+              <Box className="side-panel"></Box>
             </Grid>
           )}
         </ResponsiveContext.Consumer>

@@ -19,15 +19,13 @@ type GridProps = ConnectedProps<typeof connector> & {
 }
 
 type GridState = {
-  maxDimension: string,
-  horizontalMargin: string
+  maxDimension: string
 }
 
 class SudokuGrid extends React.PureComponent<GridProps, {}> {
 
   state = {
     maxDimension: '100%',
-    horizontalMargin: '0'
   }
 
   componentDidMount() {
@@ -42,18 +40,17 @@ class SudokuGrid extends React.PureComponent<GridProps, {}> {
       // The 3 x 3 grid of blocks must be a square that takes up at most
       // the minimum of the height and width of the grid section
       const maxDimension = Math.min(rect.width, rect.height)
-      // Center the sudoku grid in the grid section
-      const horizontalMargin = (rect.width - maxDimension) / 2
       this.setState({
-        maxDimension: `${maxDimension}px`,
-        horizontalMargin: horizontalMargin
+        // 6% is the total of the top and bottom margins defined
+        // for .sudoku-grid in sudoku-grid.scss
+        maxDimension: `calc(${maxDimension}px - 6%)`
       })
     }
   }
 
   render() {
     return (
-      <Box fill style={{ maxHeight: this.state.maxDimension, maxWidth: this.state.maxDimension, marginLeft: this.state.horizontalMargin, marginRight: this.state.horizontalMargin }}>
+      <Box className="sudoku-grid" fill style={{ maxHeight: this.state.maxDimension, maxWidth: this.state.maxDimension, marginLeft: `auto`, marginRight: `auto` }}>
         {
           [0, 1, 2].map(i =>
             <Grid columns={{ count: 3, size: 'auto' }} key={i}>
