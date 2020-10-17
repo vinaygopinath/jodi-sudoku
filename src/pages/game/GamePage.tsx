@@ -11,6 +11,7 @@ import { CellValueRange } from '../../store/grid/grid-types';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import { generateSudokuPuzzle } from '../../store/game/game-actions';
 import { Redirect } from 'react-router-dom';
+import SudokuPanel from './components/sudoku-panel/SudokuPanel';
 
 const mapState = (state: RootState) => ({
   difficultyLevel: state.player.difficultyLevel,
@@ -125,7 +126,7 @@ class GamePage extends React.Component<GameProps, {}> {
               <Box id="grid-section">
                 <SudokuGrid />
               </Box>
-              <Box className="side-panel"></Box>
+              <SudokuPanel />
             </Grid>
           )}
         </ResponsiveContext.Consumer>

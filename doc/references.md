@@ -36,3 +36,6 @@
 ## Unicode regex
 * XRegExp library for Unicode (`P{L}`, `P{N}`..) matching: https://github.com/slevithan/xregexp
 * XRegExp online test: https://www.regexplanet.com/advanced/xregexp/index.html
+
+## Page visibility Javascript
+* Page Visibility API: https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API

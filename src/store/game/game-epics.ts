@@ -8,7 +8,6 @@ import { SudokuPuzzle } from '../../models/sudoku/SudokuPuzzle'
 import { initialiseCell } from '../grid/grid-actions'
 import { GENERATE_SUDOKU_PUZZLE } from './game-types'
 import { from, EMPTY } from 'rxjs'
-import { DifficultyLevel } from '../../models/player/DifficultyLevel'
 import { ActionCreators } from 'redux-undo'
 
 export const gameEpics = combineEpics(

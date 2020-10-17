@@ -1,0 +1,9 @@
+@import 'src/styles/_common.scss';
+.sudoku-panel {
+  background-color: #44004E;
+
+  .clock {
+    margin-top: 1rem;
+    color: $light-grey-color;
+  }
+}
