@@ -1,7 +1,8 @@
 import { Action } from "../../models/common/Action";
 import { ArrowKey } from "../../utils/KeyboardUtils";
 import { getCellKey } from "../../utils/SudokuUtils";
-export const ENTER_CELL_VALUE = 'ENTER_CELL_VALUE'
+export const SET_VALUE_OF_ACTIVE_CELL = 'SET_VALUE_OF_ACTIVE_CELL'
+export const SET_SELECTED_CELL_VALUE = 'SET_SELECTED_CELL_VALUE'
 export const CLEAR_CELL_VALUE = 'CLEAR_CELL_VALUE'
 export const CHANGE_CELL_FOCUS = 'CHANGE_CELL_FOCUS'
 export const MOVE_CELL_FOCUS_BY_ARROW_KEY = 'MOVE_CELL_FOCUS_BY_ARROW_KEY'
@@ -21,10 +22,19 @@ export interface CellState {
   invalid?: boolean
 }
 
-interface EnterCellValueAction extends Action {
-  type: typeof ENTER_CELL_VALUE,
+interface SetActiveCellValueAction extends Action {
+  type: typeof SET_VALUE_OF_ACTIVE_CELL,
   payload: {
     value: CellValueRange
+  }
+}
+
+interface SetSelectedCellValueAction extends Action {
+  type: typeof SET_SELECTED_CELL_VALUE,
+  payload: {
+    value: CellValueRange,
+    row: RowRange,
+    column: ColumnRange
   }
 }
 
@@ -57,7 +67,7 @@ interface MoveCellFocusByArrowKeyAction extends Action {
   }
 }
 
-export type GridActionTypes = EnterCellValueAction | ClearCellValueAction | ChangeCellFocusAction | MoveCellFocusByArrowKeyAction | InitialiseCellAction
+export type GridActionTypes = SetActiveCellValueAction | SetSelectedCellValueAction | ClearCellValueAction | ChangeCellFocusAction | MoveCellFocusByArrowKeyAction | InitialiseCellAction
 
 export type CellRowColumnKeyType = "cell_row1_column1" | "cell_row1_column2" | "cell_row1_column3" | "cell_row1_column4" | "cell_row1_column5" | "cell_row1_column6" | "cell_row1_column7" | "cell_row1_column8" | "cell_row1_column9" | "cell_row2_column1" | "cell_row2_column2" | "cell_row2_column3" | "cell_row2_column4" | "cell_row2_column5" | "cell_row2_column6" | "cell_row2_column7" | "cell_row2_column8" | "cell_row2_column9" | "cell_row3_column1" | "cell_row3_column2" | "cell_row3_column3" | "cell_row3_column4" | "cell_row3_column5" | "cell_row3_column6" | "cell_row3_column7" | "cell_row3_column8" | "cell_row3_column9" | "cell_row4_column1" | "cell_row4_column2" | "cell_row4_column3" | "cell_row4_column4" | "cell_row4_column5" | "cell_row4_column6" | "cell_row4_column7" | "cell_row4_column8" | "cell_row4_column9" | "cell_row5_column1" | "cell_row5_column2" | "cell_row5_column3" | "cell_row5_column4" | "cell_row5_column5" | "cell_row5_column6" | "cell_row5_column7" | "cell_row5_column8" | "cell_row5_column9" | "cell_row6_column1" | "cell_row6_column2" | "cell_row6_column3" | "cell_row6_column4" | "cell_row6_column5" | "cell_row6_column6" | "cell_row6_column7" | "cell_row6_column8" | "cell_row6_column9" | "cell_row7_column1" | "cell_row7_column2" | "cell_row7_column3" | "cell_row7_column4" | "cell_row7_column5" | "cell_row7_column6" | "cell_row7_column7" | "cell_row7_column8" | "cell_row7_column9" | "cell_row8_column1" | "cell_row8_column2" | "cell_row8_column3" | "cell_row8_column4" | "cell_row8_column5" | "cell_row8_column6" | "cell_row8_column7" | "cell_row8_column8" | "cell_row8_column9" | "cell_row9_column1" | "cell_row9_column2" | "cell_row9_column3" | "cell_row9_column4" | "cell_row9_column5" | "cell_row9_column6" | "cell_row9_column7" | "cell_row9_column8" | "cell_row9_column9"
 export const CellRowColumnKeys: Array<CellRowColumnKeyType> = ["cell_row1_column1", "cell_row1_column2", "cell_row1_column3", "cell_row1_column4", "cell_row1_column5", "cell_row1_column6", "cell_row1_column7", "cell_row1_column8", "cell_row1_column9", "cell_row2_column1", "cell_row2_column2", "cell_row2_column3", "cell_row2_column4", "cell_row2_column5", "cell_row2_column6", "cell_row2_column7", "cell_row2_column8", "cell_row2_column9", "cell_row3_column1", "cell_row3_column2", "cell_row3_column3", "cell_row3_column4", "cell_row3_column5", "cell_row3_column6", "cell_row3_column7", "cell_row3_column8", "cell_row3_column9", "cell_row4_column1", "cell_row4_column2", "cell_row4_column3", "cell_row4_column4", "cell_row4_column5", "cell_row4_column6", "cell_row4_column7", "cell_row4_column8", "cell_row4_column9", "cell_row5_column1", "cell_row5_column2", "cell_row5_column3", "cell_row5_column4", "cell_row5_column5", "cell_row5_column6", "cell_row5_column7", "cell_row5_column8", "cell_row5_column9", "cell_row6_column1", "cell_row6_column2", "cell_row6_column3", "cell_row6_column4", "cell_row6_column5", "cell_row6_column6", "cell_row6_column7", "cell_row6_column8", "cell_row6_column9", "cell_row7_column1", "cell_row7_column2", "cell_row7_column3", "cell_row7_column4", "cell_row7_column5", "cell_row7_column6", "cell_row7_column7", "cell_row7_column8", "cell_row7_column9", "cell_row8_column1", "cell_row8_column2", "cell_row8_column3", "cell_row8_column4", "cell_row8_column5", "cell_row8_column6", "cell_row8_column7", "cell_row8_column8", "cell_row8_column9", "cell_row9_column1", "cell_row9_column2", "cell_row9_column3", "cell_row9_column4", "cell_row9_column5", "cell_row9_column6", "cell_row9_column7", "cell_row9_column8", "cell_row9_column9"]

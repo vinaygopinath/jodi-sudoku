@@ -1,3 +1,5 @@
 {
-
+  "game_value_entry_mode_cell_first": "Cell first",
+  "game_value_entry_mode_digit_first_toast": "'Digit first' enabled: Please select a digit before selecting one or more cells",
+  "game_value_entry_mode_cell_first_toast": "'Cell first' enabled: Please select a cell before selecting a digit"
 }

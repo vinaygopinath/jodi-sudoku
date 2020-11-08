@@ -80,7 +80,7 @@ class LandingPage extends React.Component<LandingProps, LandingState> {
     }
   }
 
-  getLocaleString(translationKey: string): String {
+  getLocaleString(translationKey: string): string {
     return this.props.t(translationKey)
   }
 

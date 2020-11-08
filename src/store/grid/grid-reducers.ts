@@ -1,4 +1,4 @@
-import { GridActionTypes, GridState, CellState, ENTER_CELL_VALUE, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE, INITIALISE_CELL } from "./grid-types"
+import { GridActionTypes, GridState, CellState, SET_VALUE_OF_ACTIVE_CELL, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE, INITIALISE_CELL, SET_SELECTED_CELL_VALUE } from "./grid-types"
 import { ArrowKey } from "../../utils/KeyboardUtils"
 import { getCellKey } from "../../utils/SudokuUtils"
 import { Immutable } from "../../utils/types/immutable"
@@ -101,9 +101,10 @@ export const GRID_INITIAL_STATE: GridState = {
 
 export function gridReducer(state = GRID_INITIAL_STATE, action: GridActionTypes): GridState {
   switch (action.type) {
-    case ENTER_CELL_VALUE: return computeNewGridStateAfterValueChange(state, action.payload)
-    case CLEAR_CELL_VALUE: return computeNewGridStateAfterClearCell(state)
-    case CHANGE_CELL_FOCUS: return computeNewGridStateAfterFocusChange(state, action.payload)
+    case SET_VALUE_OF_ACTIVE_CELL: return computeNewGridStateOnActiveCellValueChange(state, action.payload)
+    case SET_SELECTED_CELL_VALUE: return computeNewGridStateOnSelectedCellValueChange(state, action.payload)
+    case CLEAR_CELL_VALUE: return computeNewGridStateOnClearCell(state)
+    case CHANGE_CELL_FOCUS: return computeNewGridStateOnFocusChange(state, action.payload)
     case MOVE_CELL_FOCUS_BY_ARROW_KEY: return computeNewGridStateOnArrowKey(state, action.payload.arrowKey)
     case INITIALISE_CELL: return computeNewStateAfterInitialiseCell(state, action.payload)
     default: return state
@@ -120,7 +121,7 @@ function computeNewStateAfterInitialiseCell(state: Immutable<GridState>, { row, 
   }
 }
 
-function computeNewGridStateAfterValueChange(state: GridState, data: Immutable<{ value: CellValueRange }>): Immutable<GridState> {
+function computeNewGridStateOnActiveCellValueChange(state: GridState, data: Immutable<{ value: CellValueRange }>): Immutable<GridState> {
   const activeCellKeyAndState = getActiveCellKeyAndState(state)
   if (!activeCellKeyAndState || activeCellKeyAndState.activeCellState.initial) {
     // no active cell, or active cell is an unmodifiable initial cell. Do nothing
@@ -136,7 +137,16 @@ function computeNewGridStateAfterValueChange(state: GridState, data: Immutable<{
   }
 }
 
-function computeNewGridStateAfterClearCell(state: Immutable<GridState>): Immutable<GridState> {
+function computeNewGridStateOnSelectedCellValueChange(state: GridState, data: Immutable<{ value: CellValueRange, row: RowRange, column: ColumnRange }>): Immutable<GridState> {
+  const { value, row, column } = data
+
+  const focusChangedState = computeNewGridStateOnFocusChange(state, { row, column, isActive: true})
+  const cellValueState = computeNewGridStateOnActiveCellValueChange(focusChangedState, { value })
+
+  return cellValueState
+}
+
+function computeNewGridStateOnClearCell(state: Immutable<GridState>): Immutable<GridState> {
   const activeCellKeyAndState = getActiveCellKeyAndState(state)
   if (!activeCellKeyAndState || activeCellKeyAndState.activeCellState.initial) {
     // no active cell, or active cell is an unmodifiable initial cell. Do nothing
@@ -150,7 +160,7 @@ function computeNewGridStateAfterClearCell(state: Immutable<GridState>): Immutab
   }
 }
 
-function computeNewGridStateAfterFocusChange(state: GridState, data: Immutable<{ row: RowRange, column: ColumnRange, isActive: boolean }>): Immutable<GridState> {
+function computeNewGridStateOnFocusChange(state: GridState, data: Immutable<{ row: RowRange, column: ColumnRange, isActive: boolean }>): Immutable<GridState> {
   const updatedCellKey = getCellKey(data.row, data.column)
 
   const updatedState: GridState = {
@@ -168,7 +178,7 @@ function computeNewGridStateAfterFocusChange(state: GridState, data: Immutable<{
 function computeNewGridStateOnArrowKey(state: Immutable<GridState>, arrowKey: ArrowKey) {
   const activeCellKeyAndState = getActiveCellKeyAndState(state)
   if (!activeCellKeyAndState) {
-    return computeNewGridStateAfterFocusChange(state, { row: 1, column: 1, isActive: true })
+    return computeNewGridStateOnFocusChange(state, { row: 1, column: 1, isActive: true })
   }
 
   const { row, column } = getRowAndColumnFromKey(activeCellKeyAndState.activeKey)
@@ -210,7 +220,7 @@ function computeNewGridStateOnArrowKey(state: Immutable<GridState>, arrowKey: Ar
     }
   }
 
-  return computeNewGridStateAfterFocusChange(state, { row: newActiveRow, column: newActiveColumn, isActive: true })
+  return computeNewGridStateOnFocusChange(state, { row: newActiveRow, column: newActiveColumn, isActive: true })
 }
 
 function getActiveCellKeyAndState(state: Immutable<GridState>): Immutable<{ activeKey: CellRowColumnKeyType, activeCellState: CellState } | null> {

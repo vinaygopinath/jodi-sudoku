@@ -1,9 +1,13 @@
-import { GameState, GameActionTypes, GENERATE_SUDOKU_PUZZLE, PAUSE_SUDOKU_CLOCK, RESUME_SUDOKU_CLOCK, UPDATE_SUDOKU_CLOCK } from "./game-types";
+import { ValueEntryMode } from "../../models/game/ValueEntryMode";
+import { CellValueRange } from "../grid/grid-types";
+import { GameState, GameActionTypes, GENERATE_SUDOKU_PUZZLE, PAUSE_SUDOKU_CLOCK, RESUME_SUDOKU_CLOCK, UPDATE_SUDOKU_CLOCK, CHANGE_VALUE_ENTRY_MODE, SET_ACTIVE_DIGIT } from "./game-types";
 
 export const GAME_INITIAL_STATE: GameState = {
   initialised: false,
   isClockRunning: false,
-  gameTime: 'T00:00:00'
+  gameTime: 'T00:00:00',
+  valueEntryMode: ValueEntryMode.DIGIT_FIRST,
+  activeDigit: null
 }
 
 export function gameReducer(state = GAME_INITIAL_STATE, action: GameActionTypes): GameState {
@@ -12,6 +16,8 @@ export function gameReducer(state = GAME_INITIAL_STATE, action: GameActionTypes)
     case PAUSE_SUDOKU_CLOCK: return computeStateAfterClockPauseOrResume(state, false)
     case RESUME_SUDOKU_CLOCK: return computeStateAfterClockPauseOrResume(state, true)
     case UPDATE_SUDOKU_CLOCK: return computeStateAfterClockUpdate(state, action.payload.time)
+    case CHANGE_VALUE_ENTRY_MODE: return computeStateOnValueEntryModeChange(state, action.payload.newValueEntryMode)
+    case SET_ACTIVE_DIGIT: return computeStateOnActiveDigitChange(state, action.payload.activeDigit)
     default: return state
   }
 }
@@ -20,7 +26,9 @@ function computeStateAfterInitialising(state: GameState): GameState {
   return {
     gameTime: 'T00:00:00',
     initialised: true,
-    isClockRunning: true
+    isClockRunning: true,
+    valueEntryMode: ValueEntryMode.DIGIT_FIRST,
+    activeDigit: null
   }
 }
 
@@ -38,6 +46,21 @@ function computeStateAfterClockUpdate(state: GameState, updatedTime: string): Ga
   }
 }
 
+function computeStateOnValueEntryModeChange(state: GameState, newValueEntryMode: ValueEntryMode): GameState {
+  return {
+    ...state,
+    valueEntryMode: newValueEntryMode,
+    activeDigit: null
+  }
+}
+
+function computeStateOnActiveDigitChange(state: GameState, activeDigit: CellValueRange): GameState {
+  return {
+    ...state,
+    activeDigit: activeDigit
+  }
+}
+
 function standardiseTime(updatedTime: string): string {
   const [hour, min, second] = updatedTime.substr(1).split(":")
 
@@ -45,10 +68,5 @@ function standardiseTime(updatedTime: string): string {
 }
 
 function padToTwoDigits(numberString: string): string {
-  const number = Number.parseInt(numberString)
-  if (number < 10) {
-    return `0${number}`
-  } else {
-    return numberString
-  }
+  return numberString.padStart(2, '0')
 }

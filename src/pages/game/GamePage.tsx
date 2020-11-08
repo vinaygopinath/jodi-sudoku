@@ -6,7 +6,7 @@ import { RootState } from '../../store/rootReducer';
 import { Box, Grid, Keyboard, ResponsiveContext } from 'grommet';
 import SudokuGrid from './components/sudoku-grid/SudokuGrid';
 import { ArrowKey, isArrowKey, getArrowKey, isCellValueKey, getCellValueKey, isDeleteOrBackspaceKey, isUndoKey, isRedoKey, isUnsupportedKey } from '../../utils/KeyboardUtils';
-import { moveCellFocusByArrowKey, enterCellValue, clearCellValue } from '../../store/grid/grid-actions';
+import { moveCellFocusByArrowKey, setValueOfActiveCell, clearCellValue } from '../../store/grid/grid-actions';
 import { CellValueRange } from '../../store/grid/grid-types';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import { generateSudokuPuzzle } from '../../store/game/game-actions';
@@ -21,7 +21,7 @@ const mapState = (state: RootState) => ({
 
 const mapDispatch = {
   moveCellFocusByArrowKey: (arrowKey: ArrowKey) => moveCellFocusByArrowKey(arrowKey),
-  enterCellValue: (value: CellValueRange) => enterCellValue(value),
+  setValueOfActiveCell: (value: CellValueRange) => setValueOfActiveCell(value),
   clearCellValue: () => clearCellValue(),
   generateSudokuPuzzle: () => generateSudokuPuzzle(),
   undo: () => UndoActionCreators.undo(),
@@ -95,8 +95,8 @@ class GamePage extends React.Component<GameProps, {}> {
 
     event.preventDefault()
     if (isCellValue) {
-      const numberKey = getCellValueKey(event)
-      this.props.enterCellValue(numberKey)
+      const cellValueKey = getCellValueKey(event)
+      this.props.setValueOfActiveCell(cellValueKey)
     } else if (isArrow) {
       const arrowKey = getArrowKey(event)
       this.props.moveCellFocusByArrowKey(arrowKey)

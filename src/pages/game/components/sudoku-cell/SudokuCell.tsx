@@ -4,10 +4,10 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Box } from 'grommet';
 import { RowRange, ColumnRange, CellValueRange } from '../../../../store/grid/grid-types';
 import './sudoku-cell.scss';
-import { changeCellFocus } from '../../../../store/grid/grid-actions';
-import { Dispatch, AnyAction } from 'redux';
+import { changeCellFocus, setValueOfActiveCell, setSelectedCellValue } from '../../../../store/grid/grid-actions';
 import classnames from 'classnames'
 import { getCellKey } from '../../../../utils/SudokuUtils';
+import { ValueEntryMode } from '../../../../models/game/ValueEntryMode';
 
 const mapState = (state: RootState, ownProps: { row: RowRange, column: ColumnRange }) => {
   const cellStateKey = getCellKey(ownProps.row, ownProps.column)
@@ -18,15 +18,17 @@ const mapState = (state: RootState, ownProps: { row: RowRange, column: ColumnRan
     active: cellState.active,
     highlighted: cellState.highlighted,
     invalid: cellState.invalid,
-    initial: cellState.initial
+    initial: cellState.initial,
+    valueEntryMode: state.game.valueEntryMode,
+    activeDigit: state.game.activeDigit
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>, ownProps: { row: RowRange, column: ColumnRange }) => ({
-    changeFocus: (isFocussed: boolean) => {
-      dispatch(changeCellFocus(ownProps.row, ownProps.column, isFocussed))
-    }
-})
+const mapDispatchToProps = {
+    changeFocus: (row: RowRange, column: ColumnRange, isFocussed: boolean) => changeCellFocus(row, column, isFocussed),
+    setActiveCellValue: (cellValue: CellValueRange) => setValueOfActiveCell(cellValue),
+    setSelectedCellValue: (row: RowRange, column: ColumnRange, cellValue: CellValueRange,) => setSelectedCellValue(row, column, cellValue)
+}
 
 const connector = connect(mapState, mapDispatchToProps)
 
@@ -46,15 +48,22 @@ type SudokuCellState = {
 
 class SudokuCell extends React.PureComponent<SudokuCellProps, SudokuCellState> {
 
+  setFocusOrSetCellValue() {
+    if (this.props.valueEntryMode === ValueEntryMode.DIGIT_FIRST && this.props.activeDigit != null) {
+      this.props.setSelectedCellValue(this.props.row, this.props.column, this.props.activeDigit)
+    } else {
+      this.props.changeFocus(this.props.row, this.props.column, true)
+    }
+  }
+
   render() {
-    // console.log(`Rendering cell ${getCellStateKey(this.props.row, this.props.column)} with active ${this.props.active!!}`);
     const contentClasses = classnames({
       'cell': true,
       active: this.props.active,
       initial: this.props.initial
     })
     return (
-      <Box className={contentClasses} border={false} focusIndicator={false} onClick={(e: any) => this.props.changeFocus(true)}>
+      <Box className={contentClasses} border={false} focusIndicator={false} onClick={() => this.setFocusOrSetCellValue()}>
         <div className="cell-content">{this.props.value || ''}</div>
       </Box>
     )

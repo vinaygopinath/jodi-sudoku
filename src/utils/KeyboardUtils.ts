@@ -22,7 +22,7 @@ export function isArrowKey(event: React.KeyboardEvent<HTMLElement>): boolean {
 }
 
 export function isCellValueKey(event: React.KeyboardEvent<HTMLElement>): boolean {
-  return CELL_VALUE_KEYS.includes(event.key)
+  return !event.ctrlKey && !event.metaKey && !event.altKey && CELL_VALUE_KEYS.includes(event.key)
 }
 
 export function isUndoKey(event: React.KeyboardEvent<HTMLElement>): boolean {
@@ -34,7 +34,7 @@ export function isRedoKey(event: React.KeyboardEvent<HTMLElement>): boolean {
 }
 
 export function isUnsupportedKey(event: React.KeyboardEvent<HTMLElement>): boolean {
-  return !event.ctrlKey && !event.metaKey && event.key !== "Alt" && ANY_ALPHANUMERIC_KEY_REGEX.test(event.key)
+  return !event.ctrlKey && !event.metaKey && !event.altKey && ANY_ALPHANUMERIC_KEY_REGEX.test(event.key)
 }
 
 export function getArrowKey(event: React.KeyboardEvent<HTMLElement>): ArrowKey {
