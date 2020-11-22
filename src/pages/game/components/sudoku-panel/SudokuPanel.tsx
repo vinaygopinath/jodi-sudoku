@@ -1,15 +1,15 @@
 import React from 'react';
 import { RootState } from "../../../../store/rootReducer"
 import { connect, ConnectedProps } from 'react-redux';
-import { Box, Button, CheckBox, Clock } from 'grommet';
+import { Box, Button, CheckBox, Clock, Menu } from 'grommet';
 import './sudoku-panel.scss';
 import { changeValueEntryMode, pauseSudokuClock, resumeSudokuClock, updateSudokuClock } from '../../../../store/game/game-actions';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { ValueEntryMode } from '../../../../models/game/ValueEntryMode';
-import Toast from '../toast/toast';
+import Toast from '../toast/Toast';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import CellValueDigit from '../cell-value-digit/CellValueDigit';
-import { Undo } from 'grommet-icons';
+import { Undo, Menu as MenuIcon } from 'grommet-icons';
 
 const mapState = (state: RootState) => ({
   isClockRunning: state.game.isClockRunning,
@@ -76,9 +76,32 @@ class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState
     return (
       <Box className="sudoku-panel">
         {this.state.initialGameTime && this.showClock()}
-        {this.showValueEntryModeToggle()}
+        {this.showMenu()}
         {this.showDigitButtons()}
         {this.state.isToastVisible && <Toast label={this.state.toastText} />}
+      </Box>
+    )
+  }
+
+  showMenu() {
+    return (
+      <Box align="end">
+        <Menu
+          justifyContent="center"
+          label={<MenuIcon />}
+          items={[
+            {
+              label: (
+                <Box direction="row" alignSelf="center" margin={{ top: 'small', end: 'medium', bottom: 'large' }}>
+                  <CheckBox label={this.getLocaleString('game_value_entry_mode_cell_first')} toggle checked={this.props.valueEntryMode === ValueEntryMode.CELL_FIRST} onChange={(event) => this.onToggleValueEntryMode(event.target.checked)} />
+                </Box>
+              )
+            },
+            // { label: 'Settings', icon: <SettingsOption />, gap: 'medium' },
+          ]}
+        >
+
+        </Menu>
       </Box>
     )
   }
@@ -104,16 +127,8 @@ class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState
           <CellValueDigit digit={7} />
           <CellValueDigit digit={8} />
           <CellValueDigit digit={9} />
-          <Button className="undo-button" icon={<Undo color="#5f0f40"/>} onClick={() => this.onClickUndo()} />
+          <Button className="undo-button" icon={<Undo color="#5f0f40" />} onClick={() => this.onClickUndo()} />
         </Box>
-      </Box>
-    )
-  }
-
-  showValueEntryModeToggle() {
-    return (
-      <Box direction="row" alignSelf="end" margin={{top: 'small', end: 'medium', bottom: 'small'}}>
-        <CheckBox label={this.getLocaleString('game_value_entry_mode_cell_first')} toggle checked={this.props.valueEntryMode === ValueEntryMode.CELL_FIRST} onChange={(event) => this.onToggleValueEntryMode(event.target.checked)} />
       </Box>
     )
   }
