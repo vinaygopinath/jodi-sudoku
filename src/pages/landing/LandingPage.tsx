@@ -46,7 +46,7 @@ class LandingPage extends React.Component<LandingProps, LandingState> {
     return (
       <ResponsiveContext.Consumer >
         {size => (
-          <Grid columns={size === 'small' ? ["full"] : ["1/4", "1/4", "1/4", "1/4"]}>
+          <Grid columns={size === 'small' ? ["full"] : ["auto"]}>
             <Button margin="small" size="large" color="neutral-1" label={this.getLocaleString('landing_difficulty_level_easy')} primary onClick={() => this.selectDifficultyLevel(DifficultyLevel.EASY)} />
             <Button margin="small" size="large" color="neutral-2" label={this.getLocaleString('landing_difficulty_level_medium')} primary onClick={() => this.selectDifficultyLevel(DifficultyLevel.MEDIUM)} />
             <Button margin="small" size="large" color="neutral-3" label={this.getLocaleString('landing_difficulty_level_hard')} primary onClick={() => this.selectDifficultyLevel(DifficultyLevel.HARD)} />

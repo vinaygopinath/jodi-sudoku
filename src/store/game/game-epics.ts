@@ -21,7 +21,7 @@ function generateSudokuPuzzle(
     ofType(GENERATE_SUDOKU_PUZZLE),
     mergeMap(() => {
       const difficultyLevel = state$.value.player.difficultyLevel
-      if (!difficultyLevel) {
+      if (difficultyLevel === null || difficultyLevel === undefined) {
         console.error('Generate sudoku puzzle called when difficulty level was not set')
         return EMPTY
       }
