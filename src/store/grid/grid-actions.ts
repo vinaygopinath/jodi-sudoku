@@ -1,4 +1,4 @@
-import { RowRange, ColumnRange, CellValueRange, GridActionTypes, SET_VALUE_OF_ACTIVE_CELL, CHANGE_CELL_FOCUS, MOVE_CELL_FOCUS_BY_ARROW_KEY, CLEAR_CELL_VALUE, INITIALISE_CELL, SET_SELECTED_CELL_VALUE } from "./grid-types";
+import { RowRange, ColumnRange, CellValueRange, GridActionTypes, SET_VALUE_OF_ACTIVE_CELL, CHANGE_CELL_FOCUS, MOVE_CELL_FOCUS_BY_ARROW_KEY, CLEAR_CELL_VALUE, INITIALISE_CELL, SET_SELECTED_CELL_VALUE, RESET_CELL } from "./grid-types";
 import { ArrowKey } from "../../utils/KeyboardUtils";
 
 export function setValueOfActiveCell(value: CellValueRange): GridActionTypes {
@@ -35,6 +35,16 @@ export function initialiseCell(row: RowRange, column: ColumnRange, value: CellVa
 export function clearCellValue(): GridActionTypes {
   return {
     type: CLEAR_CELL_VALUE
+  }
+}
+
+export function resetCell(row: RowRange, column: ColumnRange): GridActionTypes {
+  return {
+    type: RESET_CELL,
+    payload: {
+      row: row,
+      column: column
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import { GridActionTypes, GridState, CellState, SET_VALUE_OF_ACTIVE_CELL, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE, INITIALISE_CELL, SET_SELECTED_CELL_VALUE } from "./grid-types"
+import { GridActionTypes, GridState, CellState, SET_VALUE_OF_ACTIVE_CELL, CellValueRange, RowRange, ColumnRange, CHANGE_CELL_FOCUS, CellRowColumnKeys, getCellStateFromKey, MOVE_CELL_FOCUS_BY_ARROW_KEY, CellRowColumnKeyType, CLEAR_CELL_VALUE, INITIALISE_CELL, SET_SELECTED_CELL_VALUE, RESET_CELL } from "./grid-types"
 import { ArrowKey } from "../../utils/KeyboardUtils"
 import { getCellKey } from "../../utils/SudokuUtils"
 import { Immutable } from "../../utils/types/immutable"
@@ -107,7 +107,18 @@ export function gridReducer(state = GRID_INITIAL_STATE, action: GridActionTypes)
     case CHANGE_CELL_FOCUS: return computeNewGridStateOnFocusChange(state, action.payload)
     case MOVE_CELL_FOCUS_BY_ARROW_KEY: return computeNewGridStateOnArrowKey(state, action.payload.arrowKey)
     case INITIALISE_CELL: return computeNewStateAfterInitialiseCell(state, action.payload)
+    case RESET_CELL: return computeNewStateAfterResetCell(state, action.payload)
     default: return state
+  }
+}
+
+function computeNewStateAfterResetCell(state: Immutable<GridState>, { row, column }: Immutable<{ row: RowRange, column: ColumnRange }>): GridState {
+  const cellKey = getCellKey(row, column)
+  const cellState = getCellStateFromKey(state, cellKey)
+
+  return {
+    ...state,
+    [cellKey]: changeCellValue(cellState, null)
   }
 }
 
@@ -242,6 +253,7 @@ function toggleCellActive(cellState: CellState, isActive: boolean): Immutable<Ce
 function changeCellValue(cellState: CellState, value: CellValueRange | null): Immutable<CellState> {
   return {
     ...cellState,
+    initial: false,
     value: value
   }
 }

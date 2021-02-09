@@ -8,8 +8,9 @@ export const RESUME_SUDOKU_CLOCK = 'RESUME_SUDOKU_CLOCK'
 export const PAUSE_SUDOKU_CLOCK = 'PAUSE_SUDOKU_CLOCK'
 export const CHANGE_VALUE_ENTRY_MODE = 'CHANGE_VALUE_ENTRY_MODE'
 export const SET_ACTIVE_DIGIT = 'SET_ACTIVE_DIGIT'
+export const CLEAR_GAME = 'CLEAR_GAME'
 
-export type GameActionTypes = GenerateSudokuPuzzleAction | UpdateSudokuClockAction | PauseSudokuClockAction | ResumeSudokuClockAction | ChangeNumberModeAction | SetActiveDigitAction
+export type GameActionTypes = GenerateSudokuPuzzleAction | UpdateSudokuClockAction | PauseSudokuClockAction | ResumeSudokuClockAction | ChangeNumberModeAction | SetActiveDigitAction | ClearGameAction
 
 interface GenerateSudokuPuzzleAction extends Action {
   type: typeof GENERATE_SUDOKU_PUZZLE
@@ -42,6 +43,10 @@ interface SetActiveDigitAction extends Action {
   payload: {
     activeDigit: CellValueRange
   }
+}
+
+interface ClearGameAction extends Action {
+  type: typeof CLEAR_GAME
 }
 
 export interface GameState {

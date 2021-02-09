@@ -3,13 +3,16 @@ import { RootState } from "../../../../store/rootReducer"
 import { connect, ConnectedProps } from 'react-redux';
 import { Box, Button, CheckBox, Clock, Menu } from 'grommet';
 import './sudoku-panel.scss';
-import { changeValueEntryMode, pauseSudokuClock, resumeSudokuClock, updateSudokuClock } from '../../../../store/game/game-actions';
+import { changeValueEntryMode, clearGame, pauseSudokuClock, resumeSudokuClock, updateSudokuClock } from '../../../../store/game/game-actions';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { ValueEntryMode } from '../../../../models/game/ValueEntryMode';
 import Toast from '../toast/Toast';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import CellValueDigit from '../cell-value-digit/CellValueDigit';
 import { Undo, Menu as MenuIcon } from 'grommet-icons';
+import { PlayerActions } from '../../../../store/player/player-actions';
+import ConfirmationDialog from '../confirmation-dialog/ConfirmationDialog';
+import { Redirect } from 'react-router-dom';
 
 const mapState = (state: RootState) => ({
   isClockRunning: state.game.isClockRunning,
@@ -21,7 +24,9 @@ const mapDispatchToProps = {
   resumeSudokuClock: () => resumeSudokuClock(),
   updateSudokuClock: (newTime: string) => updateSudokuClock(newTime),
   changeValueEntryMode: (valueEntryMode: ValueEntryMode) => changeValueEntryMode(valueEntryMode),
-  undoLastAction: () => UndoActionCreators.undo()
+  undoLastAction: () => UndoActionCreators.undo(),
+  resetPlayer: () => PlayerActions.resetPlayer(),
+  clearGame: () => clearGame()
 }
 const connector = connect(mapState, mapDispatchToProps)
 type SudokuPanelProps = ConnectedProps<typeof connector> & WithTranslation & {
@@ -30,16 +35,20 @@ type SudokuPanelProps = ConnectedProps<typeof connector> & WithTranslation & {
 
 type SudokuPanelState = {
   initialGameTime: string | null,
+  redirectToLandingPage: boolean,
   isToastVisible: boolean,
-  toastText: string
+  toastText: string,
+  isConfirmationDialogVisible: boolean
 }
 
 class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState> {
 
   state = {
     initialGameTime: null,
+    redirectToLandingPage: false,
     isToastVisible: false,
-    toastText: ""
+    toastText: "",
+    isConfirmationDialogVisible: false
   }
 
   componentDidMount() {
@@ -73,12 +82,16 @@ class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState
   }
 
   render() {
+    if (this.state.redirectToLandingPage) {
+      return (<Redirect to="/" />)
+    }
     return (
       <Box className="sudoku-panel">
         {this.state.initialGameTime && this.showClock()}
         {this.showMenu()}
         {this.showDigitButtons()}
         {this.state.isToastVisible && <Toast label={this.state.toastText} />}
+        {this.showConfirmationDialog()}
       </Box>
     )
   }
@@ -97,6 +110,11 @@ class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState
                 </Box>
               )
             },
+            {
+              label: this.getLocaleString('game_menu_item_new_game'),
+              gap: 'medium',
+              onClick: this.onNewGameMenuItemClick
+            }
             // { label: 'Settings', icon: <SettingsOption />, gap: 'medium' },
           ]}
         >
@@ -131,6 +149,45 @@ class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState
         </Box>
       </Box>
     )
+  }
+
+  showConfirmationDialog() {
+    return this.state.isConfirmationDialogVisible && (
+      <ConfirmationDialog
+        positiveButtonText={this.getLocaleString('game_new_game_confirmation_dialog_positive_button_text')}
+        onPositiveButtonClick={this.onConfirmNewGameClick}
+        neutralButtonText={this.getLocaleString('game_new_game_confirmation_dialog_neutral_button_text')}
+        onNeutralButtonClick={this.closeGameInProgressDialog}
+        title={this.getLocaleString('game_new_game_confirmation_dialog_title')}
+        message={this.getLocaleString('game_new_game_confirmation_dialog_message')}
+        />
+    )
+  }
+
+  toggleGameInProgressDialog(showDialog: boolean) {
+    if (this.state.isConfirmationDialogVisible !== showDialog) {
+      this.setState({
+        isConfirmationDialogVisible: showDialog
+      })
+    }
+  }
+
+  private closeGameInProgressDialog = () => {
+    this.toggleGameInProgressDialog(false)
+  }
+
+  private onNewGameMenuItemClick = () => {
+    this.toggleGameInProgressDialog(true)
+  }
+
+  private onConfirmNewGameClick = () => {
+    this.toggleGameInProgressDialog(false)
+    this.props.resetPlayer()
+    this.props.clearGame()
+    this.setState({
+      initialGameTime: null,
+      redirectToLandingPage: true
+    })
   }
 
   onClickUndo() {

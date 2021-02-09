@@ -1,5 +1,10 @@
 {
   "game_value_entry_mode_cell_first": "Cell first",
   "game_value_entry_mode_digit_first_toast": "'Digit first' enabled: Please select a digit before selecting one or more cells",
-  "game_value_entry_mode_cell_first_toast": "'Cell first' enabled: Please select a cell before selecting a digit"
+  "game_value_entry_mode_cell_first_toast": "'Cell first' enabled: Please select a cell before selecting a digit",
+  "game_new_game_confirmation_dialog_title": "Game in progress",
+  "game_new_game_confirmation_dialog_message": "There is a game in progress. Are you sure you want to end the current game and start a new game?",
+  "game_new_game_confirmation_dialog_positive_button_text": "Start new game",
+  "game_new_game_confirmation_dialog_neutral_button_text": "Resume current game",
+  "game_menu_item_new_game": "New game"
 }

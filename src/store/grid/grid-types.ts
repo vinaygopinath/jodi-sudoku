@@ -7,6 +7,7 @@ export const CLEAR_CELL_VALUE = 'CLEAR_CELL_VALUE'
 export const CHANGE_CELL_FOCUS = 'CHANGE_CELL_FOCUS'
 export const MOVE_CELL_FOCUS_BY_ARROW_KEY = 'MOVE_CELL_FOCUS_BY_ARROW_KEY'
 export const INITIALISE_CELL = 'INITIALISE_CELL'
+export const RESET_CELL = 'RESET_CELL'
 /**
  * 1 to 9 are the valid values
  */
@@ -51,6 +52,14 @@ export interface InitialiseCellAction extends Action {
   }
 }
 
+interface ResetCellAction extends Action {
+  type: typeof RESET_CELL,
+  payload: {
+    row: RowRange,
+    column: ColumnRange
+  }
+}
+
 interface ChangeCellFocusAction extends Action {
   type: typeof CHANGE_CELL_FOCUS,
   payload: {
@@ -67,7 +76,7 @@ interface MoveCellFocusByArrowKeyAction extends Action {
   }
 }
 
-export type GridActionTypes = SetActiveCellValueAction | SetSelectedCellValueAction | ClearCellValueAction | ChangeCellFocusAction | MoveCellFocusByArrowKeyAction | InitialiseCellAction
+export type GridActionTypes = SetActiveCellValueAction | SetSelectedCellValueAction | ClearCellValueAction | ChangeCellFocusAction | MoveCellFocusByArrowKeyAction | InitialiseCellAction | ResetCellAction
 
 export type CellRowColumnKeyType = "cell_row1_column1" | "cell_row1_column2" | "cell_row1_column3" | "cell_row1_column4" | "cell_row1_column5" | "cell_row1_column6" | "cell_row1_column7" | "cell_row1_column8" | "cell_row1_column9" | "cell_row2_column1" | "cell_row2_column2" | "cell_row2_column3" | "cell_row2_column4" | "cell_row2_column5" | "cell_row2_column6" | "cell_row2_column7" | "cell_row2_column8" | "cell_row2_column9" | "cell_row3_column1" | "cell_row3_column2" | "cell_row3_column3" | "cell_row3_column4" | "cell_row3_column5" | "cell_row3_column6" | "cell_row3_column7" | "cell_row3_column8" | "cell_row3_column9" | "cell_row4_column1" | "cell_row4_column2" | "cell_row4_column3" | "cell_row4_column4" | "cell_row4_column5" | "cell_row4_column6" | "cell_row4_column7" | "cell_row4_column8" | "cell_row4_column9" | "cell_row5_column1" | "cell_row5_column2" | "cell_row5_column3" | "cell_row5_column4" | "cell_row5_column5" | "cell_row5_column6" | "cell_row5_column7" | "cell_row5_column8" | "cell_row5_column9" | "cell_row6_column1" | "cell_row6_column2" | "cell_row6_column3" | "cell_row6_column4" | "cell_row6_column5" | "cell_row6_column6" | "cell_row6_column7" | "cell_row6_column8" | "cell_row6_column9" | "cell_row7_column1" | "cell_row7_column2" | "cell_row7_column3" | "cell_row7_column4" | "cell_row7_column5" | "cell_row7_column6" | "cell_row7_column7" | "cell_row7_column8" | "cell_row7_column9" | "cell_row8_column1" | "cell_row8_column2" | "cell_row8_column3" | "cell_row8_column4" | "cell_row8_column5" | "cell_row8_column6" | "cell_row8_column7" | "cell_row8_column8" | "cell_row8_column9" | "cell_row9_column1" | "cell_row9_column2" | "cell_row9_column3" | "cell_row9_column4" | "cell_row9_column5" | "cell_row9_column6" | "cell_row9_column7" | "cell_row9_column8" | "cell_row9_column9"
 export const CellRowColumnKeys: Array<CellRowColumnKeyType> = ["cell_row1_column1", "cell_row1_column2", "cell_row1_column3", "cell_row1_column4", "cell_row1_column5", "cell_row1_column6", "cell_row1_column7", "cell_row1_column8", "cell_row1_column9", "cell_row2_column1", "cell_row2_column2", "cell_row2_column3", "cell_row2_column4", "cell_row2_column5", "cell_row2_column6", "cell_row2_column7", "cell_row2_column8", "cell_row2_column9", "cell_row3_column1", "cell_row3_column2", "cell_row3_column3", "cell_row3_column4", "cell_row3_column5", "cell_row3_column6", "cell_row3_column7", "cell_row3_column8", "cell_row3_column9", "cell_row4_column1", "cell_row4_column2", "cell_row4_column3", "cell_row4_column4", "cell_row4_column5", "cell_row4_column6", "cell_row4_column7", "cell_row4_column8", "cell_row4_column9", "cell_row5_column1", "cell_row5_column2", "cell_row5_column3", "cell_row5_column4", "cell_row5_column5", "cell_row5_column6", "cell_row5_column7", "cell_row5_column8", "cell_row5_column9", "cell_row6_column1", "cell_row6_column2", "cell_row6_column3", "cell_row6_column4", "cell_row6_column5", "cell_row6_column6", "cell_row6_column7", "cell_row6_column8", "cell_row6_column9", "cell_row7_column1", "cell_row7_column2", "cell_row7_column3", "cell_row7_column4", "cell_row7_column5", "cell_row7_column6", "cell_row7_column7", "cell_row7_column8", "cell_row7_column9", "cell_row8_column1", "cell_row8_column2", "cell_row8_column3", "cell_row8_column4", "cell_row8_column5", "cell_row8_column6", "cell_row8_column7", "cell_row8_column8", "cell_row8_column9", "cell_row9_column1", "cell_row9_column2", "cell_row9_column3", "cell_row9_column4", "cell_row9_column5", "cell_row9_column6", "cell_row9_column7", "cell_row9_column8", "cell_row9_column9"]

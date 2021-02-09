@@ -8,6 +8,7 @@ export const SELECT_DIFFICULTY_LEVEL = 'SELECT_DIFFICULTY_LEVEL';
 export const SELECT_PLAYER_TYPE = 'SELECT_PLAYER_TYPE';
 export const SELECT_SINGLE_PLAYER_MODE = 'SELECT_SINGLE_PLAYER_MODE';
 export const SELECT_TWO_PLAYER_MODE = 'SELECT_TWO_PLAYER_MODE';
+export const RESET_PLAYER = 'RESET_PLAYER'
 
 interface SelectDifficultyLevelAction extends Action {
   type: typeof SELECT_DIFFICULTY_LEVEL,
@@ -29,7 +30,11 @@ interface SelectTwoPlayerMode extends Action {
   payload: TwoPlayerMode
 }
 
-export type PlayerActionTypes = SelectDifficultyLevelAction | SelectPlayerTypeAction | SelectSinglePlayerMode | SelectTwoPlayerMode
+interface ResetPlayerAction extends Action {
+  type: typeof RESET_PLAYER
+}
+
+export type PlayerActionTypes = SelectDifficultyLevelAction | SelectPlayerTypeAction | SelectSinglePlayerMode | SelectTwoPlayerMode | ResetPlayerAction
 
 export interface PlayerState {
   difficultyLevel: DifficultyLevel | null,

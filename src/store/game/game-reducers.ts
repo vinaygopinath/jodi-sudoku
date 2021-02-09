@@ -1,6 +1,6 @@
 import { ValueEntryMode } from "../../models/game/ValueEntryMode";
 import { CellValueRange } from "../grid/grid-types";
-import { GameState, GameActionTypes, GENERATE_SUDOKU_PUZZLE, PAUSE_SUDOKU_CLOCK, RESUME_SUDOKU_CLOCK, UPDATE_SUDOKU_CLOCK, CHANGE_VALUE_ENTRY_MODE, SET_ACTIVE_DIGIT } from "./game-types";
+import { GameState, GameActionTypes, GENERATE_SUDOKU_PUZZLE, PAUSE_SUDOKU_CLOCK, RESUME_SUDOKU_CLOCK, UPDATE_SUDOKU_CLOCK, CHANGE_VALUE_ENTRY_MODE, SET_ACTIVE_DIGIT, CLEAR_GAME } from "./game-types";
 
 export const GAME_INITIAL_STATE: GameState = {
   initialised: false,
@@ -18,8 +18,13 @@ export function gameReducer(state = GAME_INITIAL_STATE, action: GameActionTypes)
     case UPDATE_SUDOKU_CLOCK: return computeStateAfterClockUpdate(state, action.payload.time)
     case CHANGE_VALUE_ENTRY_MODE: return computeStateOnValueEntryModeChange(state, action.payload.newValueEntryMode)
     case SET_ACTIVE_DIGIT: return computeStateOnActiveDigitChange(state, action.payload.activeDigit)
+    case CLEAR_GAME: return computeStateOnClearGame()
     default: return state
   }
+}
+
+function computeStateOnClearGame(): GameState {
+  return GAME_INITIAL_STATE
 }
 
 function computeStateAfterInitialising(state: GameState): GameState {

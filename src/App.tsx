@@ -21,7 +21,7 @@ const App: React.FC = () => {
   return (
     <React.Suspense fallback="Loading..">
       <Grommet theme={theme} full>
-        <Route path="/" component={LandingPage} />
+        <Route exact path="/" component={LandingPage} />
         <Route path="/game" component={GamePage} />
       </Grommet>
     </React.Suspense>

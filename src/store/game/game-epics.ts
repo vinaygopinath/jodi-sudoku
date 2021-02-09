@@ -5,7 +5,7 @@ import { RootState } from '../rootReducer'
 import { mergeMap } from 'rxjs/operators'
 import { CellRowColumnKeyType, GridActionTypes } from '../grid/grid-types'
 import { SudokuPuzzle } from '../../models/sudoku/SudokuPuzzle'
-import { initialiseCell } from '../grid/grid-actions'
+import { initialiseCell, resetCell } from '../grid/grid-actions'
 import { GENERATE_SUDOKU_PUZZLE } from './game-types'
 import { from, EMPTY } from 'rxjs'
 import { ActionCreators } from 'redux-undo'
@@ -34,11 +34,21 @@ function generateSudokuPuzzle(
 }
 
 function createInitialiseActionsForPuzzle(puzzle: SudokuPuzzle): Array<GridActionTypes> {
-  return Object.keys(puzzle)
+  const initialCellActions = Object.keys(puzzle)
   .filter(key => puzzle[key as CellRowColumnKeyType]!!) // Don't create initialise actions for cells without values
   .map(key => {
     const cellKey = key as CellRowColumnKeyType
     const { row, column } = SudokuUtils.getRowAndColumnFromCellKey(cellKey)
     return initialiseCell(row, column, puzzle[cellKey])
   })
+
+  const resetExistingActions = Object.keys(puzzle)
+  .filter(key => !puzzle[key as CellRowColumnKeyType]) // Reset cell contents for cells without values
+  .map(key => {
+    const cellKey = key as CellRowColumnKeyType
+    const { row, column } = SudokuUtils.getRowAndColumnFromCellKey(cellKey)
+    return resetCell(row, column)
+  })
+
+  return initialCellActions.concat(resetExistingActions)
 }
