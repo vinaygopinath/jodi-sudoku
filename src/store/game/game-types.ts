@@ -10,9 +10,9 @@ export const CHANGE_VALUE_ENTRY_MODE = 'CHANGE_VALUE_ENTRY_MODE'
 export const SET_ACTIVE_DIGIT = 'SET_ACTIVE_DIGIT'
 export const CLEAR_GAME = 'CLEAR_GAME'
 
-export type GameActionTypes = GenerateSudokuPuzzleAction | UpdateSudokuClockAction | PauseSudokuClockAction | ResumeSudokuClockAction | ChangeNumberModeAction | SetActiveDigitAction | ClearGameAction
+export type GameActionTypes = GenerateSudokuPuzzleAction | UpdateSudokuClockAction | PauseSudokuClockAction | ResumeSudokuClockAction | ChangeValueEntryModeAction | SetActiveDigitAction | ClearGameAction
 
-interface GenerateSudokuPuzzleAction extends Action {
+export interface GenerateSudokuPuzzleAction extends Action {
   type: typeof GENERATE_SUDOKU_PUZZLE
 }
 
@@ -23,29 +23,29 @@ export interface UpdateSudokuClockAction extends Action {
   }
 }
 
-interface PauseSudokuClockAction extends Action {
+export interface PauseSudokuClockAction extends Action {
   type: typeof PAUSE_SUDOKU_CLOCK
 }
 
-interface ResumeSudokuClockAction extends Action {
+export interface ResumeSudokuClockAction extends Action {
   type: typeof RESUME_SUDOKU_CLOCK
 }
 
-interface ChangeNumberModeAction extends Action {
+export interface ChangeValueEntryModeAction extends Action {
   type: typeof CHANGE_VALUE_ENTRY_MODE,
   payload: {
     newValueEntryMode: ValueEntryMode
   }
 }
 
-interface SetActiveDigitAction extends Action {
+export interface SetActiveDigitAction extends Action {
   type: typeof SET_ACTIVE_DIGIT,
   payload: {
     activeDigit: CellValueRange
   }
 }
 
-interface ClearGameAction extends Action {
+export interface ClearGameAction extends Action {
   type: typeof CLEAR_GAME
 }
 

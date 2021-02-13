@@ -99,7 +99,11 @@ export const GRID_INITIAL_STATE: GridState = {
   cell_row9_column9: getInitialCellState()
 }
 
-export function gridReducer(state = GRID_INITIAL_STATE, action: GridActionTypes): GridState {
+export function gridReducer(state = GRID_INITIAL_STATE, action: GridActionTypes | null): GridState {
+  if (action == null) {
+    return state
+  }
+
   switch (action.type) {
     case SET_VALUE_OF_ACTIVE_CELL: return computeNewGridStateOnActiveCellValueChange(state, action.payload)
     case SET_SELECTED_CELL_VALUE: return computeNewGridStateOnSelectedCellValueChange(state, action.payload)

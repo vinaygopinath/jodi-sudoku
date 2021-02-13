@@ -14,7 +14,7 @@ export const gameEpics = combineEpics(
   generateSudokuPuzzle
 )
 
-function generateSudokuPuzzle(
+export function generateSudokuPuzzle(
   action$: ActionsObservable<Action>,
   state$: StateObservable<RootState>) {
   return action$.pipe(

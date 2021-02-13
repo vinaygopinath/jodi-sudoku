@@ -23,14 +23,14 @@ export interface CellState {
   invalid?: boolean
 }
 
-interface SetActiveCellValueAction extends Action {
+export interface SetActiveCellValueAction extends Action {
   type: typeof SET_VALUE_OF_ACTIVE_CELL,
   payload: {
     value: CellValueRange
   }
 }
 
-interface SetSelectedCellValueAction extends Action {
+export interface SetSelectedCellValueAction extends Action {
   type: typeof SET_SELECTED_CELL_VALUE,
   payload: {
     value: CellValueRange,
@@ -39,7 +39,7 @@ interface SetSelectedCellValueAction extends Action {
   }
 }
 
-interface ClearCellValueAction extends Action {
+export interface ClearCellValueAction extends Action {
   type: typeof CLEAR_CELL_VALUE
 }
 
@@ -52,7 +52,7 @@ export interface InitialiseCellAction extends Action {
   }
 }
 
-interface ResetCellAction extends Action {
+export interface ResetCellAction extends Action {
   type: typeof RESET_CELL,
   payload: {
     row: RowRange,
@@ -60,7 +60,7 @@ interface ResetCellAction extends Action {
   }
 }
 
-interface ChangeCellFocusAction extends Action {
+export interface ChangeCellFocusAction extends Action {
   type: typeof CHANGE_CELL_FOCUS,
   payload: {
     row: RowRange,
@@ -69,7 +69,7 @@ interface ChangeCellFocusAction extends Action {
   }
 }
 
-interface MoveCellFocusByArrowKeyAction extends Action {
+export interface MoveCellFocusByArrowKeyAction extends Action {
   type: typeof MOVE_CELL_FOCUS_BY_ARROW_KEY,
   payload: {
     arrowKey: ArrowKey

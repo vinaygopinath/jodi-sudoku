@@ -10,7 +10,11 @@ export const GAME_INITIAL_STATE: GameState = {
   activeDigit: null
 }
 
-export function gameReducer(state = GAME_INITIAL_STATE, action: GameActionTypes): GameState {
+export function gameReducer(state = GAME_INITIAL_STATE, action: GameActionTypes | null): GameState {
+  if (!action) {
+    return state
+  }
+
   switch (action.type) {
     case GENERATE_SUDOKU_PUZZLE: return computeStateAfterInitialising(state)
     case PAUSE_SUDOKU_CLOCK: return computeStateAfterClockPauseOrResume(state, false)
