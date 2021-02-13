@@ -13,7 +13,6 @@ export class PersistenceHelper {
    */
   public static restoreState(): RootState | null {
     const storedStateStr = localStorage.getItem(STATE_STORAGE_KEY)
-      || sessionStorage.getItem(STATE_STORAGE_KEY)
     let storedState: RootState | null = null;
     try {
       if (storedStateStr != null) {

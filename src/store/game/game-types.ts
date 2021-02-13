@@ -16,7 +16,7 @@ interface GenerateSudokuPuzzleAction extends Action {
   type: typeof GENERATE_SUDOKU_PUZZLE
 }
 
-interface UpdateSudokuClockAction extends Action {
+export interface UpdateSudokuClockAction extends Action {
   type: typeof UPDATE_SUDOKU_CLOCK,
   payload: {
     time: string
