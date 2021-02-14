@@ -8,12 +8,17 @@ import { rootEpic } from './rootEpic';
 import { GRID_INITIAL_STATE } from "./grid/grid-reducers";
 import { GridState } from "./grid/grid-types";
 import { GAME_INITIAL_STATE } from "./game/game-reducers";
+import { UPDATE_SUDOKU_CLOCK } from "./game/game-types";
 
 const DEFAULT_STATE: RootState = {
   player: PLAYER_INITIAL_STATE,
   grid: (GRID_INITIAL_STATE as any) as StateWithHistory<GridState>,
   game: GAME_INITIAL_STATE
 }
+
+const LOG_EXCLUDED_ACTIONS = [
+  UPDATE_SUDOKU_CLOCK
+]
 
 function configureAppStore(preloadedState: RootState, isRestored: boolean) {
   const middlewares = []
@@ -27,7 +32,10 @@ function configureAppStore(preloadedState: RootState, isRestored: boolean) {
   if (process.env.NODE_ENV === 'development') {
     const { createLogger } = require('redux-logger');
 
-    middlewares.push(createLogger({ collapsed: true }));
+    middlewares.push(createLogger({
+      collapsed: true,
+      predicate: (state: RootState, action: Action) => !LOG_EXCLUDED_ACTIONS.includes(action.type)
+    }));
   }
   const enhancers = compose(applyMiddleware(...middlewares))
 

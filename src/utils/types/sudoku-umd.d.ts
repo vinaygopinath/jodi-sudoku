@@ -42,4 +42,12 @@ declare module 'sudoku-umd' {
    * solution.
    */
   declare function solve(board: string, reverse?: boolean): string | false
+
+  /**
+   * Print a sudoku `board` to the console
+   *
+   * @param board A string of 81 characters representing the board,
+   * with digits [1-9] or a dot to represent an empty cell
+   */
+  declare function print_board(board: string): string
 }

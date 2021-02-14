@@ -3,8 +3,10 @@ import { SudokuPuzzle } from "../models/sudoku/SudokuPuzzle";
 import sudoku from 'sudoku-umd';
 import { RowRange, ColumnRange, CellRowColumnKeyType, CellValueRange } from "../store/grid/grid-types";
 
+const MAX_UNIQUENESS_ATTEMPTS = 25
+
 export function generateSudokuPuzzle(difficultyLevel: DifficultyLevel): SudokuPuzzle {
-  const sudokuString = sudoku.generate(getDifficultyLevelString(difficultyLevel))
+  const sudokuString = generateUniquePuzzleString(difficultyLevel)
   // Force Typescript to treat the empty {} as SudokuPuzzle
   // We'll fill in the properties in the loop
   const puzzle: SudokuPuzzle = {} as SudokuPuzzle
@@ -44,4 +46,33 @@ function getDifficultyLevelString(difficultyLevel: DifficultyLevel): string {
     case DifficultyLevel.HARD: return 'hard';
     case DifficultyLevel.EXTREME: return 'very-hard';
   }
+
+function generateUniquePuzzleString(difficultyLevel: DifficultyLevel): string {
+  let bestEffortUniquePuzzleString = sudoku.generate(getDifficultyLevelString(difficultyLevel))
+  let isUnique = false
+  let i = 0
+  do {
+    isUnique = isPuzzleUnique(bestEffortUniquePuzzleString)
+    if (isUnique) {
+      console.log(`Found unique puzzle in iteration ${i}`);
+    } else {
+      bestEffortUniquePuzzleString = sudoku.generate(getDifficultyLevelString(difficultyLevel))
+    }
+    i++;
+  } while (!isUnique && i < MAX_UNIQUENESS_ATTEMPTS);
+
+  return bestEffortUniquePuzzleString
+}
+
+function isPuzzleUnique(puzzleString: string): boolean {
+  let isUnique = false
+  try {
+    const standardSolution = sudoku.solve(puzzleString)
+    const reverseSolution = sudoku.solve(puzzleString, true)
+    isUnique = standardSolution == reverseSolution
+  } catch (e) {
+    console.error(`Error while solving puzzle`, e);
+  }
+
+  return isUnique
 }

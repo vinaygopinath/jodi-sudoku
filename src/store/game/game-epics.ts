@@ -35,20 +35,20 @@ export function generateSudokuPuzzle(
 
 function createInitialiseActionsForPuzzle(puzzle: SudokuPuzzle): Array<GridActionTypes> {
   const initialCellActions = Object.keys(puzzle)
-  .filter(key => puzzle[key as CellRowColumnKeyType]!!) // Don't create initialise actions for cells without values
-  .map(key => {
-    const cellKey = key as CellRowColumnKeyType
-    const { row, column } = SudokuUtils.getRowAndColumnFromCellKey(cellKey)
-    return initialiseCell(row, column, puzzle[cellKey])
-  })
+    .filter(key => puzzle[key as CellRowColumnKeyType]!!) // Don't create initialise actions for cells without values
+    .map(key => {
+      const cellKey = key as CellRowColumnKeyType
+      const { row, column } = SudokuUtils.getRowAndColumnFromCellKey(cellKey)
+      return initialiseCell(row, column, puzzle[cellKey])
+    })
 
   const resetExistingActions = Object.keys(puzzle)
-  .filter(key => !puzzle[key as CellRowColumnKeyType]) // Reset cell contents for cells without values
-  .map(key => {
-    const cellKey = key as CellRowColumnKeyType
-    const { row, column } = SudokuUtils.getRowAndColumnFromCellKey(cellKey)
-    return resetCell(row, column)
-  })
+    .filter(key => !puzzle[key as CellRowColumnKeyType]) // Reset cell contents for empty puzzle cells
+    .map(key => {
+      const cellKey = key as CellRowColumnKeyType
+      const { row, column } = SudokuUtils.getRowAndColumnFromCellKey(cellKey)
+      return resetCell(row, column)
+    })
 
   return initialCellActions.concat(resetExistingActions)
 }
