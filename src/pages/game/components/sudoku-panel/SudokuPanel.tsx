@@ -9,7 +9,7 @@ import { ValueEntryMode } from '../../../../models/game/ValueEntryMode';
 import Toast from '../toast/Toast';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import CellValueDigit from '../cell-value-digit/CellValueDigit';
-import { Undo, Menu as MenuIcon } from 'grommet-icons';
+import { Undo, Menu as MenuIcon, New } from 'grommet-icons';
 import { PlayerActions } from '../../../../store/player/player-actions';
 import ConfirmationDialog from '../confirmation-dialog/ConfirmationDialog';
 import { Redirect } from 'react-router-dom';
@@ -105,12 +105,12 @@ class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState
     return (
       <Box align="end">
         <Menu
-          justifyContent="center"
+          justifyContent="start"
           label={<MenuIcon />}
           items={[
             {
               label: (
-                <Box direction="row" alignSelf="center" margin={{ top: 'small', end: 'medium', bottom: 'large' }}>
+                <Box style={{marginTop: 0, marginBottom: 0}} direction="row" alignSelf="start" margin={{ top: 'small', end: 'medium', bottom: 'large' }} onClick={(event: React.MouseEvent) => { this.onToggleValueEntryMode(this.props.valueEntryMode === ValueEntryMode.CELL_FIRST)}}>
                   <CheckBox label={this.getLocaleString('game_value_entry_mode_cell_first')} toggle checked={this.props.valueEntryMode === ValueEntryMode.CELL_FIRST} onChange={(event) => this.onToggleValueEntryMode(event.target.checked)} />
                 </Box>
               )
@@ -118,7 +118,12 @@ class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState
             {
               label: this.getLocaleString('game_menu_item_new_game'),
               gap: 'medium',
-              onClick: this.onNewGameMenuItemClick
+              onClick: this.onNewGameMenuItemClick,
+              icon: (
+                <Box pad={{start: 'small'}} alignContent="center">
+                  <New size="medium"/>
+                </Box>
+              )
             }
             // { label: 'Settings', icon: <SettingsOption />, gap: 'medium' },
           ]}
