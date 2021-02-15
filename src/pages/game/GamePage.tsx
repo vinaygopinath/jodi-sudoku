@@ -9,14 +9,19 @@ import { ArrowKey, isArrowKey, getArrowKey, isCellValueKey, getCellValueKey, isD
 import { moveCellFocusByArrowKey, setValueOfActiveCell, clearCellValue } from '../../store/grid/grid-actions';
 import { CellValueRange } from '../../store/grid/grid-types';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
-import { generateSudokuPuzzle } from '../../store/game/game-actions';
+import { generateSudokuPuzzle, clearGame } from '../../store/game/game-actions';
 import { Redirect } from 'react-router-dom';
+import { PlayerActions } from '../../store/player/player-actions';
+import ConfirmationDialog from './components/confirmation-dialog/ConfirmationDialog';
 import SudokuPanel from './components/sudoku-panel/SudokuPanel';
+import { DateTimeUtils } from '../../utils/DateTimeUtils';
 
 const mapState = (state: RootState) => ({
   difficultyLevel: state.player.difficultyLevel,
   playerType: state.player.playerType,
-  initialised: state.game.initialised
+  initialised: state.game.initialised,
+  isGameSolved: state.game.isSolved,
+  gameDuration: state.game.gameTime
 })
 
 const mapDispatch = {
@@ -24,6 +29,8 @@ const mapDispatch = {
   setValueOfActiveCell: (value: CellValueRange) => setValueOfActiveCell(value),
   clearCellValue: () => clearCellValue(),
   generateSudokuPuzzle: () => generateSudokuPuzzle(),
+  resetPlayer: () => PlayerActions.resetPlayer(),
+  clearGame: () => clearGame(),
   undo: () => UndoActionCreators.undo(),
   redo: () => UndoActionCreators.redo()
 }
@@ -86,6 +93,10 @@ class GamePage extends React.Component<GameProps, {}> {
   }
 
   handleKeyboardEvent(event: React.KeyboardEvent<HTMLElement>) {
+    if (this.props.isGameSolved) {
+      // Game is solved, don't handle any key events
+      return
+    }
     const isArrow = isArrowKey(event)
     const isCellValue = isCellValueKey(event)
     const isDeleteOrBackspace = isDeleteOrBackspaceKey(event)
@@ -123,7 +134,7 @@ class GamePage extends React.Component<GameProps, {}> {
     }
 
     return (
-      <Keyboard onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => { console.log(`Key is ${event.key}`); this.handleKeyboardEvent(event) }} target="document">
+      <Keyboard onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => { this.handleKeyboardEvent(event) }} target="document">
         <ResponsiveContext.Consumer>
           {size => (
             <Grid fill rows={this.getLayoutRowsForSize(size)} columns={this.getLayoutColumnsForSize(size)} areas={this.getLayoutGridAreasForSize(size)}>
@@ -134,8 +145,33 @@ class GamePage extends React.Component<GameProps, {}> {
             </Grid>
           )}
         </ResponsiveContext.Consumer>
+        {this.showGameSolvedDialog()}
       </Keyboard>
     )
+  }
+
+  showGameSolvedDialog() {
+    return this.props.isGameSolved && (
+      <ConfirmationDialog
+        positiveButtonText={this.getLocaleString('game_complete_dialog_positive_button_text')}
+        onPositiveButtonClick={this.onConfirmNewGameClick}
+        title={this.getLocaleString('game_complete_dialog_title')}
+        message={this.getLocaleString('game_complete_dialog_message', { time: DateTimeUtils.getHumanReadableTime(this.props.gameDuration) })}
+        />
+    )
+  }
+
+  getLocaleString(translationKey: string, args: any = undefined): string {
+    return this.props.t(translationKey, args)
+  }
+
+  private onConfirmNewGameClick = () => {
+    this.props.resetPlayer()
+    this.props.clearGame()
+    this.setState({
+      initialGameTime: null,
+      redirectToLandingPage: true
+    })
   }
 }
 

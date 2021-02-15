@@ -9,8 +9,10 @@ export const PAUSE_SUDOKU_CLOCK = 'PAUSE_SUDOKU_CLOCK'
 export const CHANGE_VALUE_ENTRY_MODE = 'CHANGE_VALUE_ENTRY_MODE'
 export const SET_ACTIVE_DIGIT = 'SET_ACTIVE_DIGIT'
 export const CLEAR_GAME = 'CLEAR_GAME'
+export const TOGGLE_GAME_COMPLETED = 'TOGGLE_GAME_COMPLETED'
+export const TOGGLE_GAME_SOLVED = 'TOGGLE_GAME_SOLVED'
 
-export type GameActionTypes = GenerateSudokuPuzzleAction | UpdateSudokuClockAction | PauseSudokuClockAction | ResumeSudokuClockAction | ChangeValueEntryModeAction | SetActiveDigitAction | ClearGameAction
+export type GameActionTypes = GenerateSudokuPuzzleAction | UpdateSudokuClockAction | PauseSudokuClockAction | ResumeSudokuClockAction | ChangeValueEntryModeAction | SetActiveDigitAction | ClearGameAction | ToggleGameCompleteAction | ToggleGameSolvedAction
 
 export interface GenerateSudokuPuzzleAction extends Action {
   type: typeof GENERATE_SUDOKU_PUZZLE
@@ -49,10 +51,26 @@ export interface ClearGameAction extends Action {
   type: typeof CLEAR_GAME
 }
 
+export interface ToggleGameCompleteAction extends Action {
+  type: typeof TOGGLE_GAME_COMPLETED,
+  payload: {
+    isGameCompleted: boolean
+  }
+}
+
+export interface ToggleGameSolvedAction extends Action {
+  type: typeof TOGGLE_GAME_SOLVED,
+  payload: {
+    isGameSolved: boolean
+  }
+}
+
 export interface GameState {
   initialised: boolean,
   gameTime: string,
   isClockRunning: boolean,
   valueEntryMode: ValueEntryMode,
-  activeDigit: CellValueRange | null
+  activeDigit: CellValueRange | null,
+  isCompleted: boolean,
+  isSolved: boolean
 }

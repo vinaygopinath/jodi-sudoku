@@ -1,6 +1,6 @@
 import { ValueEntryMode } from "../../models/game/ValueEntryMode";
 import { CellValueRange } from "../grid/grid-types";
-import { GameActionTypes, GENERATE_SUDOKU_PUZZLE, UPDATE_SUDOKU_CLOCK, PAUSE_SUDOKU_CLOCK, RESUME_SUDOKU_CLOCK, CHANGE_VALUE_ENTRY_MODE, SET_ACTIVE_DIGIT, CLEAR_GAME } from "./game-types";
+import { GameActionTypes, GENERATE_SUDOKU_PUZZLE, UPDATE_SUDOKU_CLOCK, PAUSE_SUDOKU_CLOCK, RESUME_SUDOKU_CLOCK, CHANGE_VALUE_ENTRY_MODE, SET_ACTIVE_DIGIT, CLEAR_GAME, TOGGLE_GAME_COMPLETED, TOGGLE_GAME_SOLVED } from "./game-types";
 
 export function generateSudokuPuzzle(): GameActionTypes {
   return {
@@ -52,5 +52,23 @@ export function setActiveDigit(activeDigit: CellValueRange): GameActionTypes {
 export function clearGame(): GameActionTypes {
   return {
     type: CLEAR_GAME
+  }
+}
+
+export function toggleGameComplete(isGameCompleted: boolean): GameActionTypes {
+  return {
+    type: TOGGLE_GAME_COMPLETED,
+    payload: {
+      isGameCompleted: isGameCompleted
+    }
+  }
+}
+
+export function toggleGameSolved(isGameSolved: boolean): GameActionTypes {
+  return {
+    type: TOGGLE_GAME_SOLVED,
+    payload: {
+      isGameSolved: isGameSolved
+    }
   }
 }

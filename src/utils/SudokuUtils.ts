@@ -1,7 +1,7 @@
 import { DifficultyLevel } from "../models/player/DifficultyLevel";
 import { SudokuPuzzle } from "../models/sudoku/SudokuPuzzle";
 import sudoku from 'sudoku-umd';
-import { RowRange, ColumnRange, CellRowColumnKeyType, CellValueRange } from "../store/grid/grid-types";
+import { RowRange, ColumnRange, CellRowColumnKeyType, CellValueRange, GridState } from "../store/grid/grid-types";
 
 const MAX_UNIQUENESS_ATTEMPTS = 25
 
@@ -39,13 +39,67 @@ export function getRowAndColumnFromIndex(index: number): { row: RowRange, column
   return { row, column }
 }
 
-function getDifficultyLevelString(difficultyLevel: DifficultyLevel): string {
+function getDifficultyLevelString(difficultyLevel: DifficultyLevel): string | number {
   switch (difficultyLevel) {
     case DifficultyLevel.EASY: return 'easy';
     case DifficultyLevel.MEDIUM: return 'medium';
     case DifficultyLevel.HARD: return 'hard';
     case DifficultyLevel.EXTREME: return 'very-hard';
   }
+}
+
+export function isGridComplete(gridState: GridState): boolean {
+  const puzzleString = convertPuzzleToString(convertGridStateToPuzzle(gridState))
+  return !puzzleString.includes('.')
+}
+
+export function isGridSolved(gridState: GridState): boolean {
+  return isPuzzleSolved(convertGridStateToPuzzle(gridState))
+}
+
+export function isPuzzleSolved(puzzle: SudokuPuzzle): boolean {
+  const puzzleString = convertPuzzleToString(puzzle)
+  if (process.env.NODE_ENV === 'development') {
+    try {
+      sudoku.print_board(puzzleString)
+    } catch (e) {
+      console.error(`Error printing current puzzle`, e);
+    }
+  }
+
+  let standardSolution: string | false
+  try {
+    standardSolution = sudoku.solve(puzzleString)
+  } catch (e) {
+    standardSolution = false
+    console.error(`Failed to solve the puzzle`, e);
+  }
+  return puzzleString === standardSolution
+}
+
+export function convertGridStateToPuzzle(gridState: GridState): SudokuPuzzle {
+  const puzzle = {} as SudokuPuzzle
+  Object.keys(gridState)
+    .forEach(key => {
+      puzzle[key as keyof SudokuPuzzle] = gridState[key as keyof GridState].value
+    })
+
+  return puzzle
+}
+
+export function convertPuzzleToString(puzzle: SudokuPuzzle): string {
+  return Object.keys(puzzle)
+    .sort() // Sort keys alphabetically, i.e, cell_row1_column1, cell_row1_column2...
+    .map(key => {
+      const value = puzzle[key as keyof SudokuPuzzle] // Value is either a number or null
+      if (value) {
+        return value.toString()
+      } else {
+        return '.'
+      }
+    })
+    .join("")
+}
 
 function generateUniquePuzzleString(difficultyLevel: DifficultyLevel): string {
   let bestEffortUniquePuzzleString = sudoku.generate(getDifficultyLevelString(difficultyLevel))
@@ -53,9 +107,7 @@ function generateUniquePuzzleString(difficultyLevel: DifficultyLevel): string {
   let i = 0
   do {
     isUnique = isPuzzleUnique(bestEffortUniquePuzzleString)
-    if (isUnique) {
-      console.log(`Found unique puzzle in iteration ${i}`);
-    } else {
+    if (!isUnique) {
       bestEffortUniquePuzzleString = sudoku.generate(getDifficultyLevelString(difficultyLevel))
     }
     i++;
@@ -69,7 +121,7 @@ function isPuzzleUnique(puzzleString: string): boolean {
   try {
     const standardSolution = sudoku.solve(puzzleString)
     const reverseSolution = sudoku.solve(puzzleString, true)
-    isUnique = standardSolution == reverseSolution
+    isUnique = standardSolution === reverseSolution
   } catch (e) {
     console.error(`Error while solving puzzle`, e);
   }

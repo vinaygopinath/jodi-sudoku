@@ -16,6 +16,7 @@ import { Redirect } from 'react-router-dom';
 
 const mapState = (state: RootState) => ({
   isClockRunning: state.game.isClockRunning,
+  isGameSolved: state.game.isSolved,
   gameTime: state.game.gameTime,
   valueEntryMode: state.game.valueEntryMode
 })
@@ -70,6 +71,10 @@ class SudokuPanel extends React.PureComponent<SudokuPanelProps, SudokuPanelState
   }
 
   onDocumentVisibilityChanged = () => {
+    if (this.props.isGameSolved) {
+      return
+    }
+
     if (document.hidden) {
       this.props.pauseSudokuClock()
     } else {

@@ -126,7 +126,7 @@ function computeNewStateAfterResetCell(state: Immutable<GridState>, { row, colum
   }
 }
 
-function computeNewStateAfterInitialiseCell(state: Immutable<GridState>, { row, column, value}: Immutable<{ row: RowRange, column: ColumnRange, value: CellValueRange | null }>): GridState {
+function computeNewStateAfterInitialiseCell(state: Immutable<GridState>, { row, column, value }: Immutable<{ row: RowRange, column: ColumnRange, value: CellValueRange | null }>): GridState {
   const cellKey = getCellKey(row, column)
   const cellState = getCellStateFromKey(state, cellKey)
 
@@ -138,6 +138,7 @@ function computeNewStateAfterInitialiseCell(state: Immutable<GridState>, { row, 
 
 function computeNewGridStateOnActiveCellValueChange(state: GridState, data: Immutable<{ value: CellValueRange }>): Immutable<GridState> {
   const activeCellKeyAndState = getActiveCellKeyAndState(state)
+
   if (!activeCellKeyAndState || activeCellKeyAndState.activeCellState.initial) {
     // no active cell, or active cell is an unmodifiable initial cell. Do nothing
     return state
@@ -146,16 +147,18 @@ function computeNewGridStateOnActiveCellValueChange(state: GridState, data: Immu
   const { activeKey, activeCellState } = activeCellKeyAndState
   const { value } = data
 
-  return {
+  const newState = {
     ...state,
     [activeKey]: changeCellValue(activeCellState, value)
   }
+
+  return newState
 }
 
 function computeNewGridStateOnSelectedCellValueChange(state: GridState, data: Immutable<{ value: CellValueRange, row: RowRange, column: ColumnRange }>): Immutable<GridState> {
   const { value, row, column } = data
 
-  const focusChangedState = computeNewGridStateOnFocusChange(state, { row, column, isActive: true})
+  const focusChangedState = computeNewGridStateOnFocusChange(state, { row, column, isActive: true })
   const cellValueState = computeNewGridStateOnActiveCellValueChange(focusChangedState, { value })
 
   return cellValueState

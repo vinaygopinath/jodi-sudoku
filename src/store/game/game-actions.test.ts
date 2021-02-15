@@ -1,6 +1,6 @@
 import { ValueEntryMode } from "../../models/game/ValueEntryMode";
-import { changeValueEntryMode, clearGame, generateSudokuPuzzle, pauseSudokuClock, resumeSudokuClock, setActiveDigit, updateSudokuClock } from "./game-actions";
-import { GENERATE_SUDOKU_PUZZLE, PAUSE_SUDOKU_CLOCK, RESUME_SUDOKU_CLOCK, UPDATE_SUDOKU_CLOCK, GenerateSudokuPuzzleAction, UpdateSudokuClockAction, PauseSudokuClockAction, ResumeSudokuClockAction, ChangeValueEntryModeAction, CHANGE_VALUE_ENTRY_MODE, SET_ACTIVE_DIGIT, SetActiveDigitAction, ClearGameAction, CLEAR_GAME } from "./game-types";
+import { changeValueEntryMode, clearGame, generateSudokuPuzzle, pauseSudokuClock, resumeSudokuClock, setActiveDigit, toggleGameComplete, toggleGameSolved, updateSudokuClock } from "./game-actions";
+import { GENERATE_SUDOKU_PUZZLE, PAUSE_SUDOKU_CLOCK, RESUME_SUDOKU_CLOCK, UPDATE_SUDOKU_CLOCK, GenerateSudokuPuzzleAction, UpdateSudokuClockAction, PauseSudokuClockAction, ResumeSudokuClockAction, ChangeValueEntryModeAction, CHANGE_VALUE_ENTRY_MODE, SET_ACTIVE_DIGIT, SetActiveDigitAction, ClearGameAction, CLEAR_GAME, ToggleGameCompleteAction, TOGGLE_GAME_COMPLETED, ToggleGameSolvedAction, TOGGLE_GAME_SOLVED } from "./game-types";
 import { CellValueRange } from '../grid/grid-types'
 
 describe('Game actions', () => {
@@ -74,5 +74,27 @@ describe('Game actions', () => {
     }
 
     expect(clearGame()).toEqual(expectedAction)
+  });
+
+  it('should create a game completed action', () => {
+    const expectedAction: ToggleGameCompleteAction = {
+      type: TOGGLE_GAME_COMPLETED,
+      payload: {
+        isGameCompleted: true
+      }
+    }
+
+    expect(toggleGameComplete(true)).toEqual(expectedAction)
+  });
+
+  it('should create a game solved action', () => {
+    const expectedAction: ToggleGameSolvedAction = {
+      type: TOGGLE_GAME_SOLVED,
+      payload: {
+        isGameSolved: true
+      }
+    }
+
+    expect(toggleGameSolved(true)).toEqual(expectedAction)
   });
 });

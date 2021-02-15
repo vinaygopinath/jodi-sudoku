@@ -1,5 +1,5 @@
 import { ValueEntryMode } from "../../models/game/ValueEntryMode";
-import { changeValueEntryMode, clearGame, generateSudokuPuzzle, pauseSudokuClock, resumeSudokuClock, setActiveDigit, updateSudokuClock } from "./game-actions";
+import { changeValueEntryMode, clearGame, generateSudokuPuzzle, pauseSudokuClock, resumeSudokuClock, setActiveDigit, toggleGameComplete, toggleGameSolved, updateSudokuClock } from "./game-actions";
 import { gameReducer, GAME_INITIAL_STATE } from "./game-reducers";
 import { GameState, GenerateSudokuPuzzleAction } from "./game-types";
 
@@ -8,18 +8,22 @@ const INITIALISED_STATE: GameState = {
   initialised: true,
   isClockRunning: true,
   valueEntryMode: ValueEntryMode.DIGIT_FIRST,
-  activeDigit: null
+  activeDigit: null,
+  isCompleted: false,
+  isSolved: false
 }
 
 describe('Game reducer', () => {
 
   it('should return the initial state', () => {
-    const expectedInitialState = {
+    const expectedInitialState: GameState = {
       initialised: false,
       isClockRunning: false,
       gameTime: 'T00:00:00',
       valueEntryMode: ValueEntryMode.DIGIT_FIRST,
-      activeDigit: null
+      activeDigit: null,
+      isSolved: false,
+      isCompleted: false
     }
 
     expect(gameReducer(undefined, null)).toEqual(expectedInitialState)
@@ -94,7 +98,9 @@ describe('Game reducer', () => {
       isClockRunning: false,
       gameTime: 'T00:00:00',
       valueEntryMode: ValueEntryMode.DIGIT_FIRST,
-      activeDigit: null
+      activeDigit: null,
+      isCompleted: false,
+      isSolved: false
     }
 
     const actualState = gameReducer(INITIALISED_STATE, clearGame())
@@ -102,4 +108,25 @@ describe('Game reducer', () => {
     expect(actualState).toEqual(expectedState)
   });
 
+  it('should update the game completed state on TOGGLE_GAME_COMPLETED', () => {
+    const expectedState: GameState = {
+      ...INITIALISED_STATE,
+      isCompleted: true
+    }
+
+    const actualState = gameReducer(INITIALISED_STATE, toggleGameComplete(true))
+
+    expect(actualState).toEqual(expectedState)
+  });
+
+  it('should update the game solved state on TOGGLE_GAME_SOLVED', () => {
+    const expectedState: GameState = {
+      ...INITIALISED_STATE,
+      isSolved: true
+    }
+
+    const actualState = gameReducer(INITIALISED_STATE, toggleGameSolved(true))
+
+    expect(actualState).toEqual(expectedState)
+  });
 });

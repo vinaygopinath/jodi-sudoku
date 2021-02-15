@@ -39,3 +39,10 @@
 
 ## Page visibility Javascript
 * Page Visibility API: https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+
+## Tests
+* Tests for Redux action creators and reducers: https://redux.js.org/recipes/writing-tests
+* Tests for epics (redux-observable): https://redux-observable.js.org/docs/recipes/WritingTests.html
+* Tests for epics (alternative approach): https://medium.com/better-programming/my-react-app-unit-testing-strategies-18ebe55cd078
+* Mock named function in a file: https://stackoverflow.com/a/60416990
+* Reset mock return values: https://jestjs.io/docs/en/mock-function-api#mockfnmockreset

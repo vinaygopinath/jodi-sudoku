@@ -25,11 +25,11 @@ declare module 'sudoku-umd' {
    *     e.g., 0 -> 17, and 100 -> 81.
    *
    *
-   *     By default, the puzzles are unique, uless you set `unique` to false.
+   *     By default, the puzzles are unique, unless you set `unique` to false.
    *     (Note: Puzzle uniqueness is not yet implemented, so puzzles are *not*
    *     guaranteed to have unique solutions)
    */
-  declare function generate(difficulty: string, unique?: boolean): string
+  declare function generate(difficulty: string | number, unique?: boolean): string
 
   /**
    * Solve a sudoku puzzle given a sudoku `board`, i.e., an 81-character

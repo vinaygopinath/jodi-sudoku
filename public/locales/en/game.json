@@ -6,5 +6,8 @@
   "game_new_game_confirmation_dialog_message": "There is a game in progress. Are you sure you want to end the current game and start a new game?",
   "game_new_game_confirmation_dialog_positive_button_text": "Start new game",
   "game_new_game_confirmation_dialog_neutral_button_text": "Resume current game",
-  "game_menu_item_new_game": "New game"
+  "game_menu_item_new_game": "New game",
+  "game_complete_dialog_title": "Game complete",
+  "game_complete_dialog_message": "You completed the game in {{time}}. Do you want to start a new game?",
+  "game_complete_dialog_positive_button_text": "Start new game"
 }
