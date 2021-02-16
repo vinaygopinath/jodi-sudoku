@@ -1,8 +1,11 @@
 {
   "landing_app_title": "ಜೋಡಿ ಸುಡೊಕು",
+  "landing_app_description": "ಗೆಳೆಯರ ಜೊತೆ ಸುಡೊಕು ಆಡಿ",
   "landing_player_type_two": "ಇಬ್ಬರು",
   "landing_difficulty_level_easy": "ಸುಲಭ",
-  "landing_difficulty_level_medium": "Medium",
+  "landing_difficulty_level_medium": "ಮಧ್ಯಮ",
   "landing_difficulty_level_hard": "ಕಷ್ಟ",
-  "landing_difficulty_level_extreme": "Extreme"
+  "landing_difficulty_level_extreme": "Extreme",
+  "landing_page_title": "ಜೋಡಿ ಸುಡೊಕು",
+  "landing_page_description": "ಗೆಳೆಯರ ಜೊತೆ ಸುಡೊಕು ಆಡಿ"
 }

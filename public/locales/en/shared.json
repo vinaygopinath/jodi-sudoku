@@ -1,0 +1,12 @@
+{
+  "shared_title": "Jodi Sudoku",
+  "shared_puzzle": "Puzzle",
+  "shared_difficulty_level_easy": "Easy",
+  "shared_difficulty_level_medium": "Medium",
+  "shared_difficulty_level_hard": "Hard",
+  "shared_difficulty_level_extreme": "Extreme",
+  "shared_difficulty_level_unknown": "Unknown",
+  "shared_player_type_single": "Single Player",
+  "shared_player_type_multi": "Multiplayer",
+  "shared_player_type_unknown": "Unknown"
+}
