@@ -35,7 +35,7 @@ class LandingPage extends React.Component<LandingProps, LandingState> {
     redirectPath: null,
   }
 
-  showDifficultyLevelSubMenu(playerType: PlayerType) {
+  selectPlayerType(playerType: PlayerType) {
     this.props.selectPlayerType(playerType)
   }
 
@@ -110,7 +110,7 @@ class LandingPage extends React.Component<LandingProps, LandingState> {
               label={this.getLocaleString("landing_player_type_single")}
               primary
               onClick={() =>
-                this.showDifficultyLevelSubMenu(PlayerType.SINGLE_PLAYER)
+                this.selectPlayerType(PlayerType.SINGLE_PLAYER)
               }
             />
             {/* <Button

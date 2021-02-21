@@ -30,6 +30,10 @@
     // background-color: #42FFE7;
     background-color: #1AC1AC;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .cell-content {

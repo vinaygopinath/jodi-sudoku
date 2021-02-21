@@ -1,13 +1,13 @@
-import React from "react";
-import { Grommet } from "grommet";
-import { Route } from "react-router-dom";
-import LandingPage from "./pages/landing/LandingPage";
-import GamePage from "./pages/game/GamePage";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
+import React from "react"
+import { Grommet } from "grommet"
+import { Route } from "react-router-dom"
+import LandingPage from "./pages/landing/LandingPage"
+import GamePage from "./pages/game/GamePage"
+import { BrowserRouter } from "react-router-dom"
+import { Provider } from "react-redux"
+import { store } from "./store/store"
 
-import './i18n'
+import "./i18n"
 
 const theme = {
   global: {
@@ -21,7 +21,7 @@ const theme = {
         "source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace",
     },
   },
-};
+}
 
 const App: React.FC = () => {
   return (
@@ -35,7 +35,7 @@ const App: React.FC = () => {
         </React.Suspense>
       </BrowserRouter>
     </Provider>
-  );
-};
+  )
+}
 
-export default App;
+export default App

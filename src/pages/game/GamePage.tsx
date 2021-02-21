@@ -67,6 +67,15 @@ class GamePage extends React.Component<GameProps, {}> {
     }
   }
 
+  shouldComponentUpdate(nextProps: GameProps, nextState: RootState) {
+    return (
+      this.props.isGameSolved !== nextProps.isGameSolved ||
+      this.props.difficultyLevel !== nextProps.difficultyLevel ||
+      this.props.playerType !== nextProps.playerType ||
+      this.props.initialised !== nextProps.initialised
+    )
+  }
+
   getLayoutRowsForSize(size: string): string[] {
     switch (size) {
       case "xsmall":

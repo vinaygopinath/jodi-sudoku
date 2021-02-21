@@ -9,6 +9,7 @@ import { initialiseCell, resetCell } from '../grid/grid-actions'
 import { GENERATE_SUDOKU_PUZZLE } from './game-types'
 import { from, EMPTY } from 'rxjs'
 import { ActionCreators } from 'redux-undo'
+import { AnalyticsUtils } from "../../utils/AnalyticsUtils"
 
 export const gameEpics = combineEpics(
   generateSudokuPuzzle
@@ -21,13 +22,21 @@ export function generateSudokuPuzzle(
     ofType(GENERATE_SUDOKU_PUZZLE),
     mergeMap(() => {
       const difficultyLevel = state$.value.player.difficultyLevel
-      if (difficultyLevel === null || difficultyLevel === undefined) {
-        console.error('Generate sudoku puzzle called when difficulty level was not set')
+      if (!difficultyLevel) {
+        AnalyticsUtils.logException("Generate sudoku puzzle called when difficulty level was not set")
+        return EMPTY
+      }
+      const playerType = state$.value.player.playerType
+      if (!playerType) {
+        AnalyticsUtils.logException('Generate sudoku puzzle called when player type was not set')
         return EMPTY
       }
 
       const puzzle = SudokuUtils.generateSudokuPuzzle(difficultyLevel)
       const initialiseActions = createInitialiseActionsForPuzzle(puzzle).concat(ActionCreators.clearHistory())
+
+      AnalyticsUtils.logStartGame(playerType, difficultyLevel)
+
       return from(initialiseActions)
     })
   )

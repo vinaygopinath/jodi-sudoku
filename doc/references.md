@@ -46,3 +46,10 @@
 * Tests for epics (alternative approach): https://medium.com/better-programming/my-react-app-unit-testing-strategies-18ebe55cd078
 * Mock named function in a file: https://stackoverflow.com/a/60416990
 * Reset mock return values: https://jestjs.io/docs/en/mock-function-api#mockfnmockreset
+
+## Google Analytics 4
+* Google Analytics 4 setup: https://developers.google.com/analytics/devguides/collection/ga4
+* Tracking virtual pageviews in single-page applications on GA4: https://developers.google.com/analytics/devguides/collection/ga4/basic-tag?technology=gtagjs
+* Google Analytics 4 with React
+  1. https://stackoverflow.com/questions/64519920/how-to-set-up-google-analytics-4-for-react-router
+  2. https://github.com/react-ga/react-ga/issues/122#issuecomment-309246808

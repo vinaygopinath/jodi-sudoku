@@ -1,4 +1,4 @@
 export enum PlayerType {
-  SINGLE_PLAYER,
-  TWO_PLAYER
+  SINGLE_PLAYER = 'single_player',
+  TWO_PLAYER = 'two_player'
 }

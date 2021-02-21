@@ -7,6 +7,7 @@ import { isGridComplete, isGridSolved } from "../../utils/SudokuUtils";
 import { EMPTY, from } from "rxjs";
 import { pauseSudokuClock, resumeSudokuClock, toggleGameComplete, toggleGameSolved } from "../game/game-actions";
 import { ActionTypes as UndoActions, ActionCreators as UndoActionCreators } from 'redux-undo';
+import { AnalyticsUtils } from "../../utils/AnalyticsUtils";
 
 export const gridEpics = combineEpics(
   markGameAsCompletedAndSolved,
@@ -30,6 +31,10 @@ export function markGameAsCompletedAndSolved(
         actions.push(toggleGameComplete(true))
       }
       if (isGridSolved(state$.value.grid.present)) {
+        const { playerType, difficultyLevel } = state$.value.player
+        if (playerType != null && difficultyLevel != null) {
+          AnalyticsUtils.logSolveGame(playerType, difficultyLevel)
+        }
         actions.push(toggleGameSolved(true), UndoActionCreators.clearHistory(), pauseSudokuClock())
       }
 
