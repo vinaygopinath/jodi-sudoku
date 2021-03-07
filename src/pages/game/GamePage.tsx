@@ -80,7 +80,7 @@ class GamePage extends React.Component<GameProps, {}> {
     switch (size) {
       case "xsmall":
       case "small":
-        return ["3/4", "1/4"]
+        return ["2/3", "1/3"]
       default:
         return ["full"]
     }
@@ -105,8 +105,8 @@ class GamePage extends React.Component<GameProps, {}> {
         return [
           /**
            * Small screens use a two-row approach.
-           * The first row takes up 75% of the height (and full width) for the game area
-           * The second row takes up 25% of the height (and full width) for the options/buttons area
+           * The first row takes up two-thirds of the height (and full width) for the game area
+           * The second row takes up a third  of the height (and full width) for the options/buttons area
            */
           { name: "game", start: [0, 0], end: [0, 0] },
           { name: "options", start: [0, 1], end: [0, 1] },

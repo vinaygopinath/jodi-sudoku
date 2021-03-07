@@ -53,3 +53,10 @@
 * Google Analytics 4 with React
   1. https://stackoverflow.com/questions/64519920/how-to-set-up-google-analytics-4-for-react-router
   2. https://github.com/react-ga/react-ga/issues/122#issuecomment-309246808
+
+## WebRTC
+* A comprehensive dive into WebRTC for client-server web games: http://blog.brkho.com/2017/03/15/dive-into-client-server-web-games-webrtc/
+* Build the backend services needed for a WebRTC app: https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/
+
+## Grommet responsive breakpoints
+https://github.com/grommet/grommet/blob/06649d7d38f24105d418ff24390bf7d641cd389b/src/js/themes/base.js#L312-L321

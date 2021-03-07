@@ -1,1 +1,8 @@
 @import "./_colors.scss";
+
+// https://github.com/grommet/grommet/blob/06649d7d38f24105d418ff24390bf7d641cd389b/src/js/themes/base.js#L312-L321
+$medium-screen-min-width: 384px;
+$medium-screen-max-width: 767px;
+$large-screen-min-width: 768px;
+$large-screen-max-width: 1151px;
+$xlarge-screen-min-width: 1152px;

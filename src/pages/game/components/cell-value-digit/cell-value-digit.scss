@@ -2,7 +2,7 @@
 
 button.digit-button {
   margin: 10px;
-  padding: 15px 25px;
+  padding: 15px 18px;
   width: min-content;
   display: inline-flex;
   font-size: 22px;
@@ -12,8 +12,18 @@ button.digit-button {
   border-color: #5f0f40;
 
   &.active {
-    padding: 13px 23px;
+    padding: 13px 16px;
     border: 4px solid #5f0f40;
     background-color: unset;
+  }
+}
+
+@media screen and (max-width: $medium-screen-max-width) {
+  button.digit-button {
+    padding: 10px 10px;
+
+    &.active {
+      padding: 8px 8px;
+    }
   }
 }
