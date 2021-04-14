@@ -29,5 +29,5 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## License
 
-GNU General Public License v3.0 or later
-See [COPYING](https://github.com/vinaygopinath/jodi-sudoku/blob/master/COPYING) to see the full text.
+GNU Affero General Public License v3.0 or later
+See [LICENSE](https://github.com/vinaygopinath/jodi-sudoku/blob/main/LICENSE) to see the full text.
