@@ -1,4 +1,4 @@
-import { CellValueRange } from "../../store/grid/grid-types";
+import { CellValueRange } from "../../store/grid/GridTypes";
 
 export interface SudokuPuzzle {
   cell_row1_column1: CellValueRange | null,

@@ -1,0 +1,13 @@
+{
+  "room_introduction_title": "Create a room for your multiplayer game",
+  "room_name": "Room name",
+  "room_name_validation_required": "Please enter a room name",
+  "room_name_placeholder": "A unique name for your room",
+  "room_description": "Description (optional)",
+  "room_description_placeholder": "An optional greeting or description of the room",
+  "room_link": "Room link",
+  "room_link_validation_required": "Please enter a link for your Room",
+  "room_full_link_prefix": "Your room will be available at ",
+  "room_create_button": "Create room",
+  "room_back_button": "Back"
+}

@@ -46,6 +46,7 @@
 * Tests for epics (alternative approach): https://medium.com/better-programming/my-react-app-unit-testing-strategies-18ebe55cd078
 * Mock named function in a file: https://stackoverflow.com/a/60416990
 * Reset mock return values: https://jestjs.io/docs/en/mock-function-api#mockfnmockreset
+* Test epics using toPromise to get actions: https://blog.yolaine.dev/how-to-write-epic-unit-tests-with-typescript-jest-redux-and-rxjs-6-in-a-react-based-application-357497b2956a
 
 ## Google Analytics 4
 * Google Analytics 4 setup: https://developers.google.com/analytics/devguides/collection/ga4

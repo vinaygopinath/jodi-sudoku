@@ -1,4 +1,4 @@
-import { RootState } from "./rootReducer";
+import { RootState } from "./RootReducer";
 
 const STATE_STORAGE_KEY = 'jodi-sudoku-app-state'
 

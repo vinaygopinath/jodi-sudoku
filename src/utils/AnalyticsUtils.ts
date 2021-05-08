@@ -63,7 +63,7 @@ export class AnalyticsUtils {
         fatal: isFatal
       }
     )
-    if (process.env.NODE_ENV === 'development') {
+    if (['development', 'test'].includes(process.env.NODE_ENV)) {
       console.error(description)
       if (stacktrace) {
         console.error(`Stacktrace = ${stacktrace}`)
@@ -84,6 +84,10 @@ export class AnalyticsUtils {
   }
 
   private static logEvent(eventName: string, properties: any | undefined) {
-    gtag('event', eventName, properties)
+    if (['development', 'test'].includes(process.env.NODE_ENV)) {
+      console.log(`Log event: ${eventName} with properties: ${JSON.stringify(properties, null, 2)}`);
+    } else {
+      gtag('event', eventName, properties)
+    }
   }
 }

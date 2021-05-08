@@ -1,0 +1,7 @@
+{
+  "player_username": "Username",
+  "player_registration_remember_user": "Remember user",
+  "player_registration_dialog_title": "New user",
+  "player_registration_dialog_message": "To get started with this multiplayer game, please enter a user name",
+  "player_registration_dialog_username_placeholder": "Anonymous Astronaut"
+}
